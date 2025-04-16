@@ -1,1 +1,921 @@
-{}
+{
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "041acaa2-2347-4fa4-8551-745d28e6126c",
+      "name": "Set date",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        -2500,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json.currentDate }}",
+        "format": "custom",
+        "customFormat": "dd-MM-yyyy/H:mm",
+        "options": {}
+      },
+      "id": "8875cf95-83d2-4d27-ba68-b74c876354c8",
+      "name": "Format date",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        -2300,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "commitDate",
+              "value": "={{ $json.formattedDate }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a9561742-a7ed-4fa1-bfe4-aa941217a1e5",
+      "name": "Set commit date",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        -2100,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "file",
+        "operation": "list",
+        "owner": {
+          "__rl": true,
+          "value": "=https://github.com/{{ $('git_repos').item.json.user }}",
+          "mode": "url"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "=https://github.com/CyrilDenoyelle/{{ $('git_repos').item.json.repos }}",
+          "mode": "url"
+        },
+        "filePath": "={{ $('git_repos').item.json.folder }}"
+      },
+      "id": "e34ca03d-cd5a-4d1a-bcfc-87b4b36c44d1",
+      "name": "List files from repository [GITHUB]",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        -1800,
+        80
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "githubOAuth2Api": {
+          "id": "SZ9drHPSJtxxDnV3",
+          "name": "GitHub account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "filters": {},
+        "requestOptions": {}
+      },
+      "id": "bc226377-e7e1-4503-9119-642d743f5258",
+      "name": "Retrieve workflows [N8N]",
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        -840,
+        20
+      ],
+      "credentials": {
+        "n8nApi": {
+          "id": "Vr1cbGSerVjbjeY5",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "jsonToBinary",
+        "options": {
+          "fileName": "={{ $json.fileName }}"
+        }
+      },
+      "id": "3d713aec-d785-4c6d-ab9e-fb43c47dc1c0",
+      "name": "Move JSON to binary",
+      "type": "n8n-nodes-base.moveBinaryData",
+      "typeVersion": 1,
+      "position": [
+        -300,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "=https://github.com/{{ $('git_repos').first().json.user }}",
+          "mode": "url"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "=https://github.com/CyrilDenoyelle/{{ $('git_repos').first().json.repos }}",
+          "mode": "url"
+        },
+        "filePath": "={{ $('git_repos').first().json.folder }}/{{ $binary.data.fileName }}",
+        "binaryData": true,
+        "commitMessage": "=backup-{{ $('Set commit date').first().json.commitDate }}"
+      },
+      "id": "03f69ebf-8438-4ca8-9c98-6a6250a503ed",
+      "name": "Upload file [GITHUB]",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        300,
+        160
+      ],
+      "credentials": {
+        "githubOAuth2Api": {
+          "id": "SZ9drHPSJtxxDnV3",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Set and format date/time\nThose nodes are responsible for setting a current date and time in format `dd-MM-yyyy/H:mm`. Date and time are used to compose commit messages in GitHub, for example: `backup-12-07-2023/14:18`.",
+        "height": 299,
+        "width": 585
+      },
+      "id": "1fb2e351-0759-49cf-b755-be0385fd0c09",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2540,
+        -60
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Make a list of existing files\nReturn a list of existing files (backups) in GitHub repository. Data returned by those nodes is used by \"IF\" node (later in workflow) to check whether the backup files should be created or updated.",
+        "height": 319,
+        "width": 390
+      },
+      "id": "9123cff8-6cf1-4d80-bbe4-0501ba394112",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1940,
+        -60
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Retrieve workflows\nGet all workflows form your n8n instance. Remember that **your credentials need to point to the instance that you want to backup.**",
+        "height": 319,
+        "width": 384
+      },
+      "id": "ff33f34e-fa5d-4d7f-be78-4937babdf7ce",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1300,
+        -60
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"user\": \"CyrilDenoyelle\",\n  \"repos\": \"n8n_game_master_ai\",\n  \"folder\": \"workflows\"\n}",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2740,
+        80
+      ],
+      "id": "8429a2ba-08c9-4ae4-b58a-b504b2294b38",
+      "name": "git_repos"
+    },
+    {
+      "parameters": {
+        "formTitle": "Commit",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "commit",
+              "placeholder": "commit message"
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -2960,
+        80
+      ],
+      "id": "eb1018e2-a3b3-4f7b-a0e6-abfe22d3d542",
+      "name": "On form submission",
+      "webhookId": "550c2e93-fff9-455f-8d23-6f3edd50cd37"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "file",
+        "operation": "edit",
+        "owner": {
+          "__rl": true,
+          "value": "=https://github.com/{{ $('git_repos').first().json.user }}",
+          "mode": "url"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "=https://github.com/CyrilDenoyelle/{{ $('git_repos').first().json.repos }}",
+          "mode": "url"
+        },
+        "filePath": "={{ $('git_repos').first().json.folder }}/{{ $node['If file exist in git'].json.fileName }}",
+        "fileContent": "={{ $('workflows').item.json.toJsonString() }}",
+        "commitMessage": "=backup-{{ $('Set commit date').first().json.commitDate }}"
+      },
+      "id": "ac955b0e-caae-43d2-a098-7d5c8a166b26",
+      "name": "Update file [GITHUB]",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        1400,
+        -20
+      ],
+      "credentials": {
+        "githubOAuth2Api": {
+          "id": "SZ9drHPSJtxxDnV3",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.currentVersionId }}",
+              "operation": "notEqual",
+              "value2": "={{ $json.gitVersionId }}"
+            }
+          ]
+        }
+      },
+      "id": "1b3b1948-d25c-4f9c-81a4-4617772b43bd",
+      "name": "Check if file changed",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1080,
+        20
+      ],
+      "notes": "{{ $json.data?.parseJson().versionId }}"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.URL }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        -40
+      ],
+      "id": "f80860ad-292a-4526-ad05-8eaf5a2d3c21",
+      "name": "HTTP Request",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "aggregateItems",
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "name"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "de6cb76e-8fa5-409a-9e45-ac9b7a139104",
+      "name": "Combine file names [GITHUB]",
+      "type": "n8n-nodes-base.itemLists",
+      "typeVersion": 2.1,
+      "position": [
+        -1040,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "workflowId": {
+          "__rl": true,
+          "value": "fDa7nEW5baBLlB7v",
+          "mode": "list",
+          "cachedResultName": "My workflow (#fDa7nEW5baBLlB7v)"
+        },
+        "requestOptions": {}
+      },
+      "id": "94e2be90-059f-48a9-920b-a5bd22fb9080",
+      "name": "Retrieve workflows [N8N]1",
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        -1640,
+        580
+      ],
+      "credentials": {
+        "n8nApi": {
+          "id": "Vr1cbGSerVjbjeY5",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://raw.githubusercontent.com/CyrilDenoyelle/n8n_game_master_ai/main/workflows/{{ $('List files from repository [GITHUB]1').item.binary.data.fileName }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1460,
+        680
+      ],
+      "id": "5e1c0578-8f8e-4387-b5fa-88104414f920",
+      "name": "HTTP Request1",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"newVersionId\": \"{{ $json.data.parseJson().versionId }}\",\n\"oldVersionId\": \"{{ $('Retrieve workflows [N8N]1').item.json.versionId }}\"\n}",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1260,
+        680
+      ],
+      "id": "904b4691-94e0-434e-95f4-b20ce7dc23a5",
+      "name": "versionIds1"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "file",
+        "operation": "get",
+        "owner": {
+          "__rl": true,
+          "value": "=https://github.com/{{ $('git_repos').item.json.user }}",
+          "mode": "url"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "=https://github.com/CyrilDenoyelle/{{ $('git_repos').item.json.repos }}",
+          "mode": "url"
+        },
+        "filePath": "={{ $('git_repos').item.json.folder }}/my-workflow-2-zAUNDWiEgr5YB1l1.json",
+        "additionalParameters": {}
+      },
+      "id": "983b32e7-bc9f-4032-9043-7217c1b55209",
+      "name": "List files from repository [GITHUB]1",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        -1940,
+        440
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "githubOAuth2Api": {
+          "id": "SZ9drHPSJtxxDnV3",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"gitVersionId\": \"{{ $data.git.versionId }}\",\n  \"currentVersionId\": \"{{ $json.current.versionId }}\"\n}",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        780,
+        -40
+      ],
+      "id": "742b755c-208a-4b97-a3ec-5e87a8a3d758",
+      "name": "versionIds"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"URL\": \"{{ $node['Sorted git files'].json.download_url }}\"\n}\n",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        260,
+        -40
+      ],
+      "id": "f339ad8f-fcf4-447d-adef-ffc08bd28e93",
+      "name": "url",
+      "notes": "\"URL\": \"{{ $('List files from repository [GITHUB]').all()[$node[\"Loop Over Items\"].context[\"currentRunIndex\"]].json.download_url }}\"\n\n\"URL\": \"{{ $node['List files from repository [GITHUB]'].all()[$node[\"Loop Over Items\"].context[\"currentRunIndex\"]].json.download_url }}\""
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"current\": {{ $node['Sorted workflows'].json.toJsonString() }},\n  \"git\": {{ $json.data }}\n}",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        600,
+        -40
+      ],
+      "id": "c79ec67f-d9db-4034-b78c-8df43c86c60c",
+      "name": "workflows"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0f16f458-70bf-488d-83f9-6ff89feeb3dd",
+              "leftValue": "={{ $('Combine file names [GITHUB]').item.json.name }}",
+              "rightValue": "={{ $binary.data.fileName }}",
+              "operator": {
+                "type": "array",
+                "operation": "contains",
+                "rightType": "any"
+              }
+            },
+            {
+              "id": "1fcdf4c6-5b0c-4447-a12a-9417916dd074",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        60
+      ],
+      "id": "d95092d8-35b2-43c0-9dd3-8839c66aa526",
+      "name": "If file exist in git"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "gitVersionId"
+            },
+            {
+              "fieldToAggregate": "currentVersionId"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1080,
+        -220
+      ],
+      "id": "0f6a22a4-82bc-4e37-8511-8d87172db8e8",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -100,
+        280
+      ],
+      "id": "0c51c720-69d6-40c0-ab9e-17738bbd5095",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"fileName\": \"{{ $json.name.replace(/\\s+/g, '-').toLowerCase() }}-{{ $json.id }}.json\"\n}\n",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -620,
+        40
+      ],
+      "id": "cf88587e-1a43-4ef1-ad8b-9bb8a11209fa",
+      "name": "fileNameSort"
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "name"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        -1200,
+        80
+      ],
+      "id": "21abdc6d-e3aa-4ee8-9f06-2ec836844c2f",
+      "name": "Sorted git files"
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "fileName"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        -460,
+        40
+      ],
+      "id": "70a233d6-bb1c-404b-84ce-5bf5fe5776ea",
+      "name": "Sorted workflows"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {},
+            {
+              "fieldToAggregate": "currentVersionId"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -240
+      ],
+      "id": "d4317350-9636-415c-afff-8ed72a1f6d5d",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        -180,
+        -20
+      ],
+      "id": "6bf1edba-0735-4233-b1dc-bf1b8e7c10b5",
+      "name": "Merge"
+    }
+  ],
+  "connections": {
+    "Set date": {
+      "main": [
+        [
+          {
+            "node": "Format date",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format date": {
+      "main": [
+        [
+          {
+            "node": "Set commit date",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set commit date": {
+      "main": [
+        [
+          {
+            "node": "List files from repository [GITHUB]",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List files from repository [GITHUB]": {
+      "main": [
+        [
+          {
+            "node": "Sorted git files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retrieve workflows [N8N]": {
+      "main": [
+        [
+          {
+            "node": "fileNameSort",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move JSON to binary": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Upload file [GITHUB]": {
+      "main": [
+        []
+      ]
+    },
+    "git_repos": {
+      "main": [
+        [
+          {
+            "node": "Set date",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "git_repos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update file [GITHUB]": {
+      "main": [
+        []
+      ]
+    },
+    "Check if file changed": {
+      "main": [
+        [],
+        []
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "workflows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine file names [GITHUB]": {
+      "main": [
+        [
+          {
+            "node": "Retrieve workflows [N8N]",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retrieve workflows [N8N]1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "versionIds1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List files from repository [GITHUB]1": {
+      "main": [
+        [
+          {
+            "node": "Retrieve workflows [N8N]1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "versionIds": {
+      "main": [
+        [
+          {
+            "node": "Check if file changed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "url": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "workflows": {
+      "main": [
+        [
+          {
+            "node": "versionIds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If file exist in git": {
+      "main": [
+        [
+          {
+            "node": "url",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Upload file [GITHUB]",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "fileNameSort": {
+      "main": [
+        [
+          {
+            "node": "Sorted workflows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sorted git files": {
+      "main": [
+        [
+          {
+            "node": "Combine file names [GITHUB]",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sorted workflows": {
+      "main": [
+        [
+          {
+            "node": "Move JSON to binary",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "If file exist in git",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "973fd82d8decc94deb020b8c1b22fb431c9ddf52c05052fd048a4a1783a2d585"
+  }
+}
