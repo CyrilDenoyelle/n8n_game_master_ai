@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-04-15T19:30:49.651Z",
-  "updatedAt": "2025-04-30T19:59:58.000Z",
+  "updatedAt": "2025-04-30T20:02:44.000Z",
   "id": "h4IaVqG7YjldMsXK",
   "name": "Git",
   "active": true,
@@ -210,8 +210,8 @@
       "type": "n8n-nodes-base.github",
       "typeVersion": 1,
       "position": [
-        1280,
-        -40
+        1640,
+        -60
       ],
       "credentials": {
         "githubOAuth2Api": {
@@ -598,6 +598,19 @@
       ],
       "id": "7a7e042f-8c6e-4a64-aaaa-d2b80a2fe0d7",
       "name": "Filter in n8n not gited"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.string = JSON.stringify(item.json, null, 2);\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1160,
+        -20
+      ],
+      "id": "5b3c00dc-2708-4878-b9b2-51e14afe6d0c",
+      "name": "Code1"
     }
   ],
   "connections": {
@@ -876,7 +889,7 @@
       "main": [
         [
           {
-            "node": "Update file [GITHUB]",
+            "node": "Code1",
             "type": "main",
             "index": 0
           }
@@ -914,7 +927,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "a577402b-41b9-4696-9374-3f015021ddbb",
+  "versionId": "4c5b3d29-3423-4d9b-a9ad-01a62d1d2ecf",
   "triggerCount": 2,
   "tags": [],
   "fileName": "git-h4IaVqG7YjldMsXK.json"
