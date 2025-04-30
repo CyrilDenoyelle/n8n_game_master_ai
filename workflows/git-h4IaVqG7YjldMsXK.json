@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-04-15T19:30:49.651Z",
-  "updatedAt": "2025-04-30T20:02:44.000Z",
+  "updatedAt": "2025-04-30T20:14:15.000Z",
   "id": "h4IaVqG7YjldMsXK",
   "name": "Git",
   "active": true,
@@ -202,7 +202,7 @@
           "mode": "url"
         },
         "filePath": "={{ $('git_repos').first().json.folder }}/{{ $('Check if file changed').item.json.git.fileName }}",
-        "fileContent": "={{ $('set current for updload').item.json.toJsonString() }}",
+        "fileContent": "={{ $('IndentJsonUpload').item.json.string }}",
         "commitMessage": "=backup-{{ $('Set commit date').first().json.commitDate }}"
       },
       "id": "ac955b0e-caae-43d2-a098-7d5c8a166b26",
@@ -210,8 +210,8 @@
       "type": "n8n-nodes-base.github",
       "typeVersion": 1,
       "position": [
-        1640,
-        -60
+        1420,
+        -40
       ],
       "credentials": {
         "githubOAuth2Api": {
@@ -407,7 +407,7 @@
     {
       "parameters": {
         "mode": "raw",
-        "jsonOutput": "={\n  \"git\": {{ $json.data }}\n}",
+        "jsonOutput": "={\n  \"git\": {{ $json.data.parseJson().toJsonString() }}\n}",
         "includeOtherFields": true,
         "options": {}
       },
@@ -606,11 +606,11 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1160,
-        -20
+        1220,
+        -40
       ],
       "id": "5b3c00dc-2708-4878-b9b2-51e14afe6d0c",
-      "name": "Code1"
+      "name": "IndentJsonUpload"
     }
   ],
   "connections": {
@@ -889,7 +889,7 @@
       "main": [
         [
           {
-            "node": "Code1",
+            "node": "IndentJsonUpload",
             "type": "main",
             "index": 0
           }
@@ -917,6 +917,17 @@
           }
         ]
       ]
+    },
+    "IndentJsonUpload": {
+      "main": [
+        [
+          {
+            "node": "Update file [GITHUB]",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -927,7 +938,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "4c5b3d29-3423-4d9b-a9ad-01a62d1d2ecf",
+  "versionId": "555c2c52-78e6-4be5-82f2-bee0318c9103",
   "triggerCount": 2,
   "tags": [],
   "fileName": "git-h4IaVqG7YjldMsXK.json"
