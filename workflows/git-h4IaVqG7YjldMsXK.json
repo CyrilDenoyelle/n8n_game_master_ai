@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-04-15T19:30:49.651Z",
-  "updatedAt": "2025-04-30T20:37:12.000Z",
+  "updatedAt": "2025-04-30T20:38:23.000Z",
   "id": "h4IaVqG7YjldMsXK",
   "name": "Git",
   "active": true,
@@ -114,7 +114,7 @@
         },
         "filePath": "={{ $('git_repos').first().json.folder }}/{{ $('n8n_workflow').item.json.fileName }}",
         "fileContent": "={{ $('IndentJsonUpload1').item.json.string }}",
-        "commitMessage": "=backup-{{ $('Set commit date').first().json.commitDate }}"
+        "commitMessage": "={{ $('On form submission').first().json.commit }}"
       },
       "id": "03f69ebf-8438-4ca8-9c98-6a6250a503ed",
       "name": "Upload file [GITHUB]",
@@ -189,7 +189,7 @@
         },
         "filePath": "={{ $('git_repos').first().json.folder }}/{{ $('Check if file changed').item.json.git.fileName }}",
         "fileContent": "={{ $('IndentJsonUpload').item.json.string }}",
-        "commitMessage": "=backup-{{ $('Set commit message').first().json.commitMessage }}"
+        "commitMessage": "={{ $('On form submission').first().json.commit }}"
       },
       "id": "ac955b0e-caae-43d2-a098-7d5c8a166b26",
       "name": "Update file [GITHUB]",
@@ -592,29 +592,6 @@
       ],
       "id": "d9f01600-1e56-498b-b458-e298ab66dd0f",
       "name": "IndentJsonUpload1"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "91612607-3763-4576-9931-dce0ddd9cff2",
-              "name": "commitMessage",
-              "value": "",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        -2260,
-        300
-      ],
-      "id": "6ef73c3d-4e84-489e-bb86-d6884bbb7bb7",
-      "name": "Set commit message"
     }
   ],
   "connections": {
@@ -687,7 +664,7 @@
       "main": [
         [
           {
-            "node": "Set commit message",
+            "node": "git_repos",
             "type": "main",
             "index": 0
           }
@@ -927,17 +904,6 @@
           }
         ]
       ]
-    },
-    "Set commit message": {
-      "main": [
-        [
-          {
-            "node": "git_repos",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
     }
   },
   "settings": {
@@ -948,7 +914,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "1a81728a-9888-4545-b921-afa56c8d3c53",
+  "versionId": "033c1295-5a5a-4261-8360-6172379ba12d",
   "triggerCount": 2,
   "tags": [],
   "fileName": "git-h4IaVqG7YjldMsXK.json"
