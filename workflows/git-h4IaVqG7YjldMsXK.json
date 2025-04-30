@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-04-15T19:30:49.651Z",
-  "updatedAt": "2025-04-30T20:14:15.000Z",
+  "updatedAt": "2025-04-30T20:17:57.000Z",
   "id": "h4IaVqG7YjldMsXK",
   "name": "Git",
   "active": true,
@@ -126,8 +126,7 @@
           "mode": "url"
         },
         "filePath": "={{ $('git_repos').first().json.folder }}/{{ $('n8n_workflow').item.json.fileName }}",
-        "binaryData": true,
-        "binaryPropertyName": "workflowData",
+        "fileContent": "={{ $('IndentJsonUpload1').item.json.string }}",
         "commitMessage": "=backup-{{ $('Set commit date').first().json.commitDate }}"
       },
       "id": "03f69ebf-8438-4ca8-9c98-6a6250a503ed",
@@ -353,8 +352,8 @@
       "type": "n8n-nodes-base.convertToFile",
       "typeVersion": 1.1,
       "position": [
-        100,
-        160
+        60,
+        320
       ],
       "id": "3bff9d2e-b338-4cba-8b3b-c6a09a5d7f88",
       "name": "Convert to File"
@@ -611,6 +610,19 @@
       ],
       "id": "5b3c00dc-2708-4878-b9b2-51e14afe6d0c",
       "name": "IndentJsonUpload"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.string = JSON.stringify(item.json, null, 2);\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        100,
+        160
+      ],
+      "id": "d9f01600-1e56-498b-b458-e298ab66dd0f",
+      "name": "IndentJsonUpload1"
     }
   ],
   "connections": {
@@ -867,7 +879,7 @@
       "main": [
         [
           {
-            "node": "Convert to File",
+            "node": "IndentJsonUpload1",
             "type": "main",
             "index": 0
           }
@@ -928,6 +940,17 @@
           }
         ]
       ]
+    },
+    "IndentJsonUpload1": {
+      "main": [
+        [
+          {
+            "node": "Upload file [GITHUB]",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -938,7 +961,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "555c2c52-78e6-4be5-82f2-bee0318c9103",
+  "versionId": "2d8e3353-081e-4c25-b601-5e5572790eff",
   "triggerCount": 2,
   "tags": [],
   "fileName": "git-h4IaVqG7YjldMsXK.json"
