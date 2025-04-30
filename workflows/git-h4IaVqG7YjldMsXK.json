@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-04-15T19:30:49.651Z",
-  "updatedAt": "2025-04-30T20:17:57.000Z",
+  "updatedAt": "2025-04-30T20:19:54.000Z",
   "id": "h4IaVqG7YjldMsXK",
   "name": "Git",
   "active": true,
@@ -339,24 +339,6 @@
       ],
       "id": "37864f69-c202-40c6-b779-f240a5ce77ed",
       "name": "When clicking ‘Test workflow’"
-    },
-    {
-      "parameters": {
-        "operation": "toJson",
-        "mode": "each",
-        "binaryPropertyName": "workflowData",
-        "options": {
-          "encoding": "utf8"
-        }
-      },
-      "type": "n8n-nodes-base.convertToFile",
-      "typeVersion": 1.1,
-      "position": [
-        60,
-        320
-      ],
-      "id": "3bff9d2e-b338-4cba-8b3b-c6a09a5d7f88",
-      "name": "Convert to File"
     },
     {
       "parameters": {
@@ -816,11 +798,6 @@
         ]
       ]
     },
-    "Convert to File": {
-      "main": [
-        []
-      ]
-    },
     "n8n_workflow": {
       "main": [
         [
@@ -961,7 +938,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "2d8e3353-081e-4c25-b601-5e5572790eff",
+  "versionId": "5a93bd39-4992-4951-a508-081182520475",
   "triggerCount": 2,
   "tags": [],
   "fileName": "git-h4IaVqG7YjldMsXK.json"
