@@ -1,1 +1,328 @@
-{"createdAt":"2025-04-10T09:48:57.979Z","updatedAt":"2025-04-16T00:42:02.000Z","id":"fDa7nEW5baBLlB7v","name":"My workflow","active":true,"nodes":[{"parameters":{"promptType":"define","text":"={{ $json.chatInput }}","options":{"systemMessage":"Tu est un "}},"type":"@n8n/n8n-nodes-langchain.agent","typeVersion":1.8,"position":[640,-440],"id":"54a76046-c57e-47b4-bfc3-9e95564ff64c","name":"AI Agent"},{"parameters":{"model":{"__rl":true,"mode":"list","value":"gpt-4o-mini"},"options":{}},"type":"@n8n/n8n-nodes-langchain.lmChatOpenAi","typeVersion":1.2,"position":[640,-240],"id":"441cead4-2695-49cc-8c78-56ed70f60e27","name":"OpenAI Chat Model","credentials":{"openAiApi":{"id":"WERJW5onaUjM7N9O","name":"OpenAi account"}}},{"parameters":{},"type":"@n8n/n8n-nodes-langchain.memoryBufferWindow","typeVersion":1.3,"position":[760,-220],"id":"c8d91295-55ed-4fa2-9f53-df0c007eb42d","name":"Simple Memory"},{"parameters":{"resource":"message","guildId":{"__rl":true,"value":"={{ $('Format message json').item.json.body.guild.id }}","mode":"id"},"channelId":{"__rl":true,"value":"={{ $('Format message json').item.json.body.channel.id }}","mode":"id"},"content":"={{ $('AI Agent').item.json.output }}","options":{}},"type":"n8n-nodes-base.discord","typeVersion":2,"position":[1020,-440],"id":"5e6e055d-6898-407d-a149-8156e11ead4d","name":"Discord1","webhookId":"ffc61cd9-b507-4df5-858a-cad19890d8e5","credentials":{"discordBotApi":{"id":"KPvBm5QqRsDAy08Q","name":"Discord Bot account"}}},{"parameters":{"operation":"fromJson","destinationKey":"=data","options":{"encoding":"utf8","keepSource":"json"}},"type":"n8n-nodes-base.extractFromFile","typeVersion":1,"position":[440,-40],"id":"e2e5c060-3d21-4255-beb1-7f21ba8302cc","name":"Extract from File"},{"parameters":{"operation":"fromJson","destinationKey":"=data","options":{"encoding":"utf8","keepSource":"json"}},"type":"n8n-nodes-base.extractFromFile","typeVersion":1,"position":[440,160],"id":"1c44d3a1-b856-40c7-80d2-1f8eb342b88b","name":"Extract from File1"},{"parameters":{"httpMethod":"POST","path":"play","options":{}},"type":"n8n-nodes-base.webhook","typeVersion":2,"position":[200,-440],"id":"2d3a7301-e6f9-49fc-8483-04aec982e3d1","name":"Webhook Play","webhookId":"1073ea64-cd61-4074-a8de-11c43b5e40a4","notesInFlow":true,"notes":"/play"},{"parameters":{"mode":"raw","jsonOutput":"={\n  \"sessionId\": \"{{ $json.body.channel.id }}\",\n  \"action\": \"sendMessage\",\n  \"chatInput\": \"{{ $json.body.metadata.originalMessage.content }}\"\n}\n ","includeOtherFields":true,"options":{}},"type":"n8n-nodes-base.set","typeVersion":3.4,"position":[420,-440],"id":"4a30ee11-8b7b-418a-8f5c-27647aff266b","name":"Format message json"},{"parameters":{"multipleMethods":true,"httpMethod":["POST","GET","PUT","DELETE"],"path":"games","options":{}},"type":"n8n-nodes-base.webhook","typeVersion":2,"position":[20,0],"id":"1a7ee621-9d98-4b16-b65b-4a75b4181efa","name":"Webhook Games","webhookId":"8eeddfbb-52cb-4c47-977e-10b94e0b88d5","notesInFlow":true,"notes":"/games"},{"parameters":{"operation":"fromJson","destinationKey":"=data","options":{"encoding":"utf8","keepSource":"json"}},"type":"n8n-nodes-base.extractFromFile","typeVersion":1,"position":[660,-20],"id":"fb69b063-d950-43af-b328-3a10424f1a87","name":"Extract from File2"}],"connections":{"OpenAI Chat Model":{"ai_languageModel":[[{"node":"AI Agent","type":"ai_languageModel","index":0}]]},"Simple Memory":{"ai_memory":[[{"node":"AI Agent","type":"ai_memory","index":0}]]},"AI Agent":{"main":[[{"node":"Discord1","type":"main","index":0}]]},"Webhook Play":{"main":[[{"node":"Format message json","type":"main","index":0}]]},"Format message json":{"main":[[{"node":"AI Agent","type":"main","index":0}]]},"Webhook Games":{"main":[[]]}},"settings":{"executionOrder":"v1"},"staticData":null,"meta":{"templateCredsSetupCompleted":true},"pinData":{"Webhook Play":[{"json":{"headers":{"accept":"application/json, text/plain, */*","content-type":"application/json","user-agent":"axios/1.8.4","content-length":"429","accept-encoding":"gzip, compress, deflate, br","host":"n8n:5678","connection":"keep-alive"},"params":{},"query":{},"body":{"message":"test","user":{"id":"192016054162030594","name":"seedess","discriminator":"0"},"channel":{"id":"1354834544079011840"},"guild":{"id":"501763051075141633"},"timestamp":1744664878285,"source":"discord","metadata":{"originalMessage":{"content":"test","author":{"id":"192016054162030594","username":"seedess","discriminator":"0"},"channelId":"1354834544079011840","guildId":"501763051075141633","timestamp":1744664878285}}},"webhookUrl":"http://localhost:5678/webhook/play","executionMode":"production"}}]},"versionId":"1a92b1e0-1f8e-4423-a735-adb2c1bf3fe2","triggerCount":5,"tags":[],"fileName":"my-workflow-fDa7nEW5baBLlB7v.json"}
+{
+  "createdAt": "2025-04-10T09:48:57.979Z",
+  "updatedAt": "2025-04-30T20:15:17.000Z",
+  "id": "fDa7nEW5baBLlB7v",
+  "name": "My workflow test",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "Tu est un "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        640,
+        -440
+      ],
+      "id": "54a76046-c57e-47b4-bfc3-9e95564ff64c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        640,
+        -240
+      ],
+      "id": "441cead4-2695-49cc-8c78-56ed70f60e27",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "WERJW5onaUjM7N9O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        760,
+        -220
+      ],
+      "id": "c8d91295-55ed-4fa2-9f53-df0c007eb42d",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "={{ $('Format message json').item.json.body.guild.id }}",
+          "mode": "id"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "={{ $('Format message json').item.json.body.channel.id }}",
+          "mode": "id"
+        },
+        "content": "={{ $('AI Agent').item.json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1020,
+        -440
+      ],
+      "id": "5e6e055d-6898-407d-a149-8156e11ead4d",
+      "name": "Discord1",
+      "webhookId": "ffc61cd9-b507-4df5-858a-cad19890d8e5",
+      "credentials": {
+        "discordBotApi": {
+          "id": "KPvBm5QqRsDAy08Q",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "destinationKey": "=data",
+        "options": {
+          "encoding": "utf8",
+          "keepSource": "json"
+        }
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        440,
+        -40
+      ],
+      "id": "e2e5c060-3d21-4255-beb1-7f21ba8302cc",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "destinationKey": "=data",
+        "options": {
+          "encoding": "utf8",
+          "keepSource": "json"
+        }
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        440,
+        160
+      ],
+      "id": "1c44d3a1-b856-40c7-80d2-1f8eb342b88b",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "play",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        200,
+        -440
+      ],
+      "id": "2d3a7301-e6f9-49fc-8483-04aec982e3d1",
+      "name": "Webhook Play",
+      "webhookId": "1073ea64-cd61-4074-a8de-11c43b5e40a4",
+      "notesInFlow": true,
+      "notes": "/play"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"sessionId\": \"{{ $json.body.channel.id }}\",\n  \"action\": \"sendMessage\",\n  \"chatInput\": \"{{ $json.body.metadata.originalMessage.content }}\"\n}\n ",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        420,
+        -440
+      ],
+      "id": "4a30ee11-8b7b-418a-8f5c-27647aff266b",
+      "name": "Format message json"
+    },
+    {
+      "parameters": {
+        "multipleMethods": true,
+        "httpMethod": [
+          "POST",
+          "GET",
+          "PUT",
+          "DELETE"
+        ],
+        "path": "games",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        20,
+        0
+      ],
+      "id": "1a7ee621-9d98-4b16-b65b-4a75b4181efa",
+      "name": "Webhook Games",
+      "webhookId": "8eeddfbb-52cb-4c47-977e-10b94e0b88d5",
+      "notesInFlow": true,
+      "notes": "/games"
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "destinationKey": "=data",
+        "options": {
+          "encoding": "utf8",
+          "keepSource": "json"
+        }
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        660,
+        -20
+      ],
+      "id": "fb69b063-d950-43af-b328-3a10424f1a87",
+      "name": "Extract from File2"
+    }
+  ],
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Discord1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Play": {
+      "main": [
+        [
+          {
+            "node": "Format message json",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format message json": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Games": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook Play": [
+      {
+        "json": {
+          "headers": {
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "axios/1.8.4",
+            "content-length": "429",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "host": "n8n:5678",
+            "connection": "keep-alive"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "message": "test",
+            "user": {
+              "id": "192016054162030594",
+              "name": "seedess",
+              "discriminator": "0"
+            },
+            "channel": {
+              "id": "1354834544079011840"
+            },
+            "guild": {
+              "id": "501763051075141633"
+            },
+            "timestamp": 1744664878285,
+            "source": "discord",
+            "metadata": {
+              "originalMessage": {
+                "content": "test",
+                "author": {
+                  "id": "192016054162030594",
+                  "username": "seedess",
+                  "discriminator": "0"
+                },
+                "channelId": "1354834544079011840",
+                "guildId": "501763051075141633",
+                "timestamp": 1744664878285
+              }
+            }
+          },
+          "webhookUrl": "http://localhost:5678/webhook/play",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "2078fc2d-6f61-4b89-9e80-52d22d9962de",
+  "triggerCount": 5,
+  "tags": [],
+  "fileName": "my-workflow-test-fDa7nEW5baBLlB7v.json"
+}
