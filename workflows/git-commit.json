@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-04-15T19:30:49.651Z",
-  "updatedAt": "2025-04-30T22:49:35.000Z",
+  "updatedAt": "2025-04-30T22:57:43.000Z",
   "id": "h4IaVqG7YjldMsXK",
   "name": "Git Commit",
   "active": true,
@@ -196,7 +196,7 @@
       "type": "n8n-nodes-base.github",
       "typeVersion": 1,
       "position": [
-        1720,
+        1700,
         -40
       ],
       "credentials": {
@@ -1057,7 +1057,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "2d0cfa7e-cb0a-419e-9446-ecfda6d1f40b",
+  "versionId": "86dfd0ee-7d61-4619-bf00-fc6974f8f61a",
   "triggerCount": 2,
   "tags": [],
   "fileName": "git-commit.json",
