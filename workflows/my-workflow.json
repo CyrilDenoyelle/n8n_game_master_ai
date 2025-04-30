@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-04-30T21:16:24.222Z",
-  "updatedAt": "2025-04-30T23:11:00.000Z",
+  "updatedAt": "2025-04-30T23:13:14.000Z",
   "id": "wj7RaQrMYuhNu9Ry",
   "name": "My workflow",
   "active": false,
@@ -76,7 +76,7 @@
       "type": "n8n-nodes-base.discord",
       "typeVersion": 2,
       "position": [
-        1040,
+        1020,
         -440
       ],
       "id": "5e6e055d-6898-407d-a149-8156e11ead4d",
@@ -270,7 +270,7 @@
   "staticData": null,
   "meta": null,
   "pinData": {},
-  "versionId": "702b77b5-f6d3-45f6-b0e4-f503794e10b8",
+  "versionId": "009a68c0-74f9-41b0-b34c-63268435f1dd",
   "triggerCount": 0,
   "tags": [],
   "fileName": "my-workflow.json",
