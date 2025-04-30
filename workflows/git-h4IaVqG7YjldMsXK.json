@@ -1,23 +1,10 @@
 {
   "createdAt": "2025-04-15T19:30:49.651Z",
-  "updatedAt": "2025-04-30T20:33:54.000Z",
+  "updatedAt": "2025-04-30T20:37:12.000Z",
   "id": "h4IaVqG7YjldMsXK",
   "name": "Git",
   "active": true,
   "nodes": [
-    {
-      "parameters": {
-        "options": {}
-      },
-      "id": "041acaa2-2347-4fa4-8551-745d28e6126c",
-      "name": "Set date",
-      "type": "n8n-nodes-base.dateTime",
-      "typeVersion": 2,
-      "position": [
-        -2160,
-        310
-      ]
-    },
     {
       "parameters": {
         "operation": "formatDate",
@@ -31,7 +18,7 @@
       "type": "n8n-nodes-base.dateTime",
       "typeVersion": 2,
       "position": [
-        -1940,
+        -1720,
         310
       ]
     },
@@ -53,7 +40,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 2,
       "position": [
-        -1720,
+        -1500,
         310
       ]
     },
@@ -79,7 +66,7 @@
       "type": "n8n-nodes-base.github",
       "typeVersion": 1,
       "position": [
-        -840,
+        -620,
         510
       ],
       "alwaysOutputData": true,
@@ -101,7 +88,7 @@
       "type": "n8n-nodes-base.n8n",
       "typeVersion": 1,
       "position": [
-        -1500,
+        -1280,
         60
       ],
       "credentials": {
@@ -134,7 +121,7 @@
       "type": "n8n-nodes-base.github",
       "typeVersion": 1,
       "position": [
-        320,
+        540,
         160
       ],
       "credentials": {
@@ -154,8 +141,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -2380,
-        310
+        -2040,
+        300
       ],
       "id": "8429a2ba-08c9-4ae4-b58a-b504b2294b38",
       "name": "git_repos"
@@ -178,8 +165,8 @@
       "type": "n8n-nodes-base.formTrigger",
       "typeVersion": 2.2,
       "position": [
-        -2600,
-        -300
+        -2460,
+        300
       ],
       "id": "eb1018e2-a3b3-4f7b-a0e6-abfe22d3d542",
       "name": "On form submission",
@@ -202,14 +189,14 @@
         },
         "filePath": "={{ $('git_repos').first().json.folder }}/{{ $('Check if file changed').item.json.git.fileName }}",
         "fileContent": "={{ $('IndentJsonUpload').item.json.string }}",
-        "commitMessage": "=backup-{{ $('Set commit date').first().json.commitDate }}"
+        "commitMessage": "=backup-{{ $('Set commit message').first().json.commitMessage }}"
       },
       "id": "ac955b0e-caae-43d2-a098-7d5c8a166b26",
       "name": "Update file [GITHUB]",
       "type": "n8n-nodes-base.github",
       "typeVersion": 1,
       "position": [
-        1460,
+        1680,
         -40
       ],
       "credentials": {
@@ -236,7 +223,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [
-        780,
+        1000,
         -40
       ],
       "notes": "{{ $json.data?.parseJson().versionId }}"
@@ -249,7 +236,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        100,
+        320,
         -40
       ],
       "id": "f80860ad-292a-4526-ad05-8eaf5a2d3c21",
@@ -266,7 +253,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        560,
+        780,
         -40
       ],
       "id": "742b755c-208a-4b97-a3ec-5e87a8a3d758",
@@ -282,7 +269,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -120,
+        100,
         -40
       ],
       "id": "f339ad8f-fcf4-447d-adef-ffc08bd28e93",
@@ -303,7 +290,7 @@
       "type": "n8n-nodes-base.sort",
       "typeVersion": 1,
       "position": [
-        -620,
+        -400,
         510
       ],
       "id": "21abdc6d-e3aa-4ee8-9f06-2ec836844c2f",
@@ -323,7 +310,7 @@
       "type": "n8n-nodes-base.sort",
       "typeVersion": 1,
       "position": [
-        -1060,
+        -840,
         60
       ],
       "id": "70a233d6-bb1c-404b-84ce-5bf5fe5776ea",
@@ -334,8 +321,8 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -2600,
-        310
+        -2740,
+        420
       ],
       "id": "37864f69-c202-40c6-b779-f240a5ce77ed",
       "name": "When clicking ‘Test workflow’"
@@ -350,7 +337,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1280,
+        -1060,
         60
       ],
       "id": "cf88587e-1a43-4ef1-ad8b-9bb8a11209fa",
@@ -366,7 +353,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -620,
+        -400,
         60
       ],
       "id": "ae973906-63a9-46e9-b4fe-fd05998b3530",
@@ -395,7 +382,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        320,
+        540,
         -40
       ],
       "id": "c79ec67f-d9db-4034-b78c-8df43c86c60c",
@@ -411,7 +398,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        440,
+        660,
         -40
       ],
       "id": "bc6214b5-2268-4bc9-856f-8bdc7bc9cf44",
@@ -427,7 +414,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -840,
+        -620,
         60
       ],
       "id": "31553a09-5e8f-4f5e-942a-370331b2a572",
@@ -442,7 +429,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -120,
+        100,
         160
       ],
       "id": "78ab9e3b-e0d3-4ea4-b397-9495c2822182",
@@ -480,7 +467,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1020,
+        1240,
         -40
       ],
       "id": "d6c82cc8-baf5-4d7e-b2b5-ca0181ea28f2",
@@ -503,7 +490,7 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.1,
       "position": [
-        -340,
+        -120,
         -40
       ],
       "id": "d5ecd191-1a59-4b32-b0fd-1911fc5f837a",
@@ -528,7 +515,7 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.1,
       "position": [
-        -340,
+        -120,
         360
       ],
       "id": "4f754ed4-c6d9-4411-b6cb-503478acde8c",
@@ -551,7 +538,7 @@
       "type": "n8n-nodes-base.itemLists",
       "typeVersion": 2.1,
       "position": [
-        -340,
+        -120,
         660
       ]
     },
@@ -574,7 +561,7 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.1,
       "position": [
-        -340,
+        -120,
         160
       ],
       "id": "7a7e042f-8c6e-4a64-aaaa-d2b80a2fe0d7",
@@ -587,7 +574,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1220,
+        1440,
         -40
       ],
       "id": "5b3c00dc-2708-4878-b9b2-51e14afe6d0c",
@@ -600,25 +587,37 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        100,
+        320,
         160
       ],
       "id": "d9f01600-1e56-498b-b458-e298ab66dd0f",
       "name": "IndentJsonUpload1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "91612607-3763-4576-9931-dce0ddd9cff2",
+              "name": "commitMessage",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2260,
+        300
+      ],
+      "id": "6ef73c3d-4e84-489e-bb86-d6884bbb7bb7",
+      "name": "Set commit message"
     }
   ],
   "connections": {
-    "Set date": {
-      "main": [
-        [
-          {
-            "node": "Format date",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Format date": {
       "main": [
         [
@@ -677,7 +676,7 @@
       "main": [
         [
           {
-            "node": "Set date",
+            "node": "Format date",
             "type": "main",
             "index": 0
           }
@@ -686,7 +685,13 @@
     },
     "On form submission": {
       "main": [
-        []
+        [
+          {
+            "node": "Set commit message",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Update file [GITHUB]": {
@@ -778,13 +783,7 @@
     },
     "When clicking ‘Test workflow’": {
       "main": [
-        [
-          {
-            "node": "git_repos",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "set fileName": {
@@ -928,6 +927,17 @@
           }
         ]
       ]
+    },
+    "Set commit message": {
+      "main": [
+        [
+          {
+            "node": "git_repos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -938,7 +948,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "a0981f37-848e-43ac-9c4d-883f5015f9bc",
+  "versionId": "1a81728a-9888-4545-b921-afa56c8d3c53",
   "triggerCount": 2,
   "tags": [],
   "fileName": "git-h4IaVqG7YjldMsXK.json"
