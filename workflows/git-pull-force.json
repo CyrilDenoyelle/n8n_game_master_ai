@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-04-30T20:43:10.437Z",
-  "updatedAt": "2025-05-01T20:44:12.000Z",
+  "updatedAt": "2025-05-01T20:50:45.000Z",
   "id": "rUR3dB2RlLVieMTQ",
   "name": "Git pull force",
   "active": true,
@@ -28,7 +28,7 @@
       "typeVersion": 1,
       "position": [
         760,
-        950
+        800
       ],
       "alwaysOutputData": true,
       "credentials": {
@@ -50,7 +50,7 @@
       "typeVersion": 3.4,
       "position": [
         -120,
-        500
+        600
       ],
       "id": "2e3a699b-862a-43fe-b26d-9c8323ceabd8",
       "name": "git_repos"
@@ -86,7 +86,7 @@
       "typeVersion": 1,
       "position": [
         2520,
-        500
+        400
       ],
       "notes": "{{ $json.data?.parseJson().versionId }}"
     },
@@ -99,7 +99,7 @@
       "typeVersion": 4.2,
       "position": [
         1640,
-        500
+        400
       ],
       "id": "364e4682-68b8-49f3-b9dd-a81a777a2fc3",
       "name": "HTTP Request",
@@ -116,7 +116,7 @@
       "typeVersion": 3.4,
       "position": [
         2300,
-        500
+        400
       ],
       "id": "390b25c7-4b8f-4c71-a445-a2970a27f73b",
       "name": "versionIds"
@@ -132,7 +132,7 @@
       "typeVersion": 3.4,
       "position": [
         1420,
-        500
+        400
       ],
       "id": "3b1eba8e-a4de-4654-a721-bb0e0f4e6f18",
       "name": "url",
@@ -153,7 +153,7 @@
       "typeVersion": 1,
       "position": [
         980,
-        950
+        800
       ],
       "id": "ae6890b3-f28e-47c3-85e8-f3a4312114d4",
       "name": "Sorted git files"
@@ -169,7 +169,7 @@
       "typeVersion": 3.4,
       "position": [
         1860,
-        500
+        400
       ],
       "id": "cfbc06a0-563d-45fc-815b-8fa0c90573ee",
       "name": "git"
@@ -185,7 +185,7 @@
       "typeVersion": 3.4,
       "position": [
         2080,
-        500
+        400
       ],
       "id": "b4dc27c9-94fd-4527-94af-12843f35015e",
       "name": "current"
@@ -210,7 +210,7 @@
       "typeVersion": 3.1,
       "position": [
         1200,
-        900
+        800
       ],
       "id": "3ffd9769-cd4a-4bdb-94f9-c199dad8120c",
       "name": "Filter in n8n not gited"
@@ -235,7 +235,7 @@
       "typeVersion": 3.1,
       "position": [
         1200,
-        700
+        600
       ],
       "id": "3ad1d4e7-1746-42a1-8d6d-b55065fa0956",
       "name": "Filter gited and not in n8n"
@@ -251,7 +251,7 @@
       "typeVersion": 1,
       "position": [
         100,
-        300
+        400
       ],
       "credentials": {
         "n8nApi": {
@@ -278,7 +278,7 @@
       "typeVersion": 3.1,
       "position": [
         1200,
-        500
+        400
       ],
       "id": "3d1bff6e-cac5-4416-a73c-c26848066dbd",
       "name": "Filter gited and in n8n"
@@ -294,7 +294,7 @@
       "typeVersion": 3.4,
       "position": [
         760,
-        300
+        400
       ],
       "id": "788e185c-786c-4a8e-9612-3df05b133b51",
       "name": "reset fileName"
@@ -310,7 +310,7 @@
       "typeVersion": 3.4,
       "position": [
         980,
-        450
+        400
       ],
       "id": "2cd728fc-ffb7-4936-8f97-7a2c4283d40d",
       "name": "n8n_workflow"
@@ -326,7 +326,7 @@
       "typeVersion": 3.4,
       "position": [
         320,
-        300
+        400
       ],
       "id": "b22abb09-4bc9-46c9-aaf0-1139e633ff48",
       "name": "set fileName"
@@ -346,7 +346,7 @@
       "typeVersion": 1,
       "position": [
         540,
-        300
+        400
       ],
       "id": "c9c06aae-13e9-4953-a072-225422d339ba",
       "name": "Sorted workflows"
@@ -362,7 +362,7 @@
       "typeVersion": 3.4,
       "position": [
         1420,
-        700
+        600
       ],
       "id": "2db98e5c-2784-4ea9-9dd7-ef9f970f6be3",
       "name": "url1",
@@ -377,7 +377,7 @@
       "typeVersion": 4.2,
       "position": [
         1640,
-        700
+        600
       ],
       "id": "e1e3aa92-955f-4adf-ba26-e8e8640c3250",
       "name": "HTTP Request1",
@@ -393,7 +393,7 @@
       "typeVersion": 3.4,
       "position": [
         1860,
-        700
+        600
       ],
       "id": "888e7d71-4cc0-4025-a370-b8c7eb7e29ba",
       "name": "set git for update1"
@@ -434,7 +434,7 @@
       "typeVersion": 1,
       "position": [
         2080,
-        700
+        600
       ],
       "id": "9c6c3d64-f541-49b9-8845-e2e15becb3e4",
       "name": "create n8n from git file",
@@ -475,7 +475,7 @@
       "typeVersion": 2.2,
       "position": [
         -340,
-        500
+        600
       ],
       "id": "259f0030-172a-433e-994c-727105e761ad",
       "name": "On form submission",
@@ -525,7 +525,7 @@
       "typeVersion": 1,
       "position": [
         2960,
-        320
+        300
       ],
       "id": "f5950673-059b-4d91-81ca-e908bc5ded96",
       "name": "git add",
@@ -542,7 +542,7 @@
       "typeVersion": 1,
       "position": [
         2740,
-        320
+        300
       ],
       "id": "dcf681b5-4389-465f-a180-44b594053b69",
       "name": "Aggregate git add select"
@@ -558,7 +558,7 @@
       "typeVersion": 3.4,
       "position": [
         3180,
-        320
+        300
       ],
       "id": "eccecfae-aa50-4328-acee-80f59fabddd5",
       "name": "files to pull"
@@ -862,7 +862,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "4859d70f-bc63-4d82-ac11-ff391a3823cf",
+  "versionId": "883afe3c-e086-49cc-b53e-6ad80c554df0",
   "triggerCount": 2,
   "tags": [],
   "fileName": "git-pull-force.json",
