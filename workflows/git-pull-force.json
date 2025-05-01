@@ -1,9 +1,9 @@
 {
   "createdAt": "2025-04-30T20:43:10.437Z",
-  "updatedAt": "2025-05-01T20:21:28.000Z",
+  "updatedAt": "2025-05-01T20:44:12.000Z",
   "id": "rUR3dB2RlLVieMTQ",
   "name": "Git pull force",
-  "active": false,
+  "active": true,
   "nodes": [
     {
       "parameters": {
@@ -467,7 +467,9 @@
             }
           ]
         },
-        "options": {}
+        "options": {
+          "path": "pullforce"
+        }
       },
       "type": "n8n-nodes-base.formTrigger",
       "typeVersion": 2.2,
@@ -860,8 +862,8 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "e13f9171-489c-4e64-bbc4-eaf1272b70af",
-  "triggerCount": 0,
+  "versionId": "4859d70f-bc63-4d82-ac11-ff391a3823cf",
+  "triggerCount": 2,
   "tags": [],
   "fileName": "git-pull-force.json",
   "option": "git-pull-force.json"
