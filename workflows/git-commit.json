@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-04-15T19:30:49.651Z",
-  "updatedAt": "2025-04-30T23:29:01.000Z",
+  "updatedAt": "2025-05-01T14:58:53.000Z",
   "id": "h4IaVqG7YjldMsXK",
   "name": "Git Commit",
   "active": true,
@@ -295,17 +295,6 @@
       "name": "Sorted workflows"
     },
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        -2740,
-        710
-      ],
-      "id": "37864f69-c202-40c6-b779-f240a5ce77ed",
-      "name": "When clicking ‘Test workflow’"
-    },
-    {
       "parameters": {
         "mode": "raw",
         "jsonOutput": "={\n  \"fileName\": \"{{ $json.name.replace(/\\s+/g, '-').toLowerCase() }}.json\"\n}\n",
@@ -336,19 +325,6 @@
       ],
       "id": "ae973906-63a9-46e9-b4fe-fd05998b3530",
       "name": "n8n_workflow"
-    },
-    {
-      "parameters": {
-        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.myNewField = 1;\n}\n\nreturn $input.all();"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -2740,
-        970
-      ],
-      "id": "a2a01b17-bf30-47a6-9950-07b86c988bc4",
-      "name": "Code"
     },
     {
       "parameters": {
@@ -413,28 +389,6 @@
       "id": "78ab9e3b-e0d3-4ea4-b397-9495c2822182",
       "name": "get workflow",
       "notes": "\"URL\": \"{{ $('List files from repository [GITHUB]').all()[$node[\"Loop Over Items\"].context[\"currentRunIndex\"]].json.download_url }}\"\n\n\"URL\": \"{{ $node['List files from repository [GITHUB]'].all()[$node[\"Loop Over Items\"].context[\"currentRunIndex\"]].json.download_url }}\""
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.1,
-      "position": [
-        -2740,
-        -560
-      ],
-      "id": "af172d49-2566-4a61-aeea-b34ecdcba9ed",
-      "name": "Merge"
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.1,
-      "position": [
-        -2520,
-        -560
-      ],
-      "id": "1c89ff40-c4c2-490b-aab8-5996ed63a7b3",
-      "name": "Merge1"
     },
     {
       "parameters": {
@@ -849,11 +803,6 @@
         ]
       ]
     },
-    "When clicking ‘Test workflow’": {
-      "main": [
-        []
-      ]
-    },
     "set fileName": {
       "main": [
         [
@@ -931,17 +880,6 @@
             "node": "IndentJsonUpload1",
             "type": "main",
             "index": 0
-          }
-        ]
-      ]
-    },
-    "Merge": {
-      "main": [
-        [
-          {
-            "node": "Merge1",
-            "type": "main",
-            "index": 1
           }
         ]
       ]
@@ -1070,7 +1008,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "99996c98-c273-4114-9983-8fb6a683d7e7",
+  "versionId": "4be87c01-2da3-47e6-8c66-f3456d0724a0",
   "triggerCount": 2,
   "tags": [],
   "fileName": "git-commit.json",
