@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-04-15T19:30:49.651Z",
-  "updatedAt": "2025-05-01T20:25:27.000Z",
+  "updatedAt": "2025-05-01T20:38:31.000Z",
   "id": "h4IaVqG7YjldMsXK",
   "name": "Git Commit",
   "active": true,
@@ -196,7 +196,7 @@
         },
         "filePath": "={{ $('git_repos').first().json.folder }}/{{ $('Check if file changed').item.json.git.fileName }}",
         "fileContent": "={{ $('IndentJsonUpload').item.json.string }}",
-        "commitMessage": "={{ $('git add update').first().json.commit }}"
+        "commitMessage": "={{ $('git add update').first().json[\"commit message\"] }}"
       },
       "id": "ac955b0e-caae-43d2-a098-7d5c8a166b26",
       "name": "Update file [GITHUB]",
@@ -1100,7 +1100,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "bb37f2d8-33ad-406e-9a6f-7e2ce02b26b5",
+  "versionId": "dcd02052-027c-4608-9e9e-4a550d271022",
   "triggerCount": 2,
   "tags": [],
   "fileName": "git-commit.json",
