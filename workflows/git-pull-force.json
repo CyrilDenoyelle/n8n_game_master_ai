@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-04-30T20:43:10.437Z",
-  "updatedAt": "2025-04-30T23:26:09.000Z",
+  "updatedAt": "2025-05-01T20:21:28.000Z",
   "id": "rUR3dB2RlLVieMTQ",
   "name": "Git pull force",
   "active": false,
@@ -108,7 +108,7 @@
     {
       "parameters": {
         "mode": "raw",
-        "jsonOutput": "={\n  \"gitVersionId\": \"{{ $json.git.versionId }}\",\n  \"currentVersionId\": \"{{ $json.current.versionId }}\"\n}",
+        "jsonOutput": "={\n  \"gitVersionId\": \"{{ $json.git.versionId }}\",\n  \"currentVersionId\": \"{{ $json.current.versionId }}\",\n  \"option\": \"{{ $json.current.fileName }}\"\n}",
         "includeOtherFields": true,
         "options": {}
       },
@@ -481,54 +481,6 @@
     },
     {
       "parameters": {
-        "defineForm": "json",
-        "jsonOutput": "=[\n   {\n\t\t\"fieldLabel\": \"files to pull force\",\n\t\t\"fieldType\": \"dropdown\",\n\t\t\"fieldOptions\": {\n\t\t\t\"values\": {{ $json.data }}\n\t\t},\n\t\t\"requiredField\": true,\n        \"multiselect\": true \n\t}\n]",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.form",
-      "typeVersion": 1,
-      "position": [
-        1200,
-        200
-      ],
-      "id": "b0f30647-d524-49e9-ba43-c4fe906bfa3a",
-      "name": "git add",
-      "webhookId": "d201245c-1175-4b37-a089-0995bf637b2f"
-    },
-    {
-      "parameters": {
-        "aggregate": "aggregateAllItemData",
-        "include": "specifiedFields",
-        "fieldsToInclude": "option",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.aggregate",
-      "typeVersion": 1,
-      "position": [
-        980,
-        200
-      ],
-      "id": "462ae9ab-6ec6-42f6-aa71-47a0b4dcde68",
-      "name": "Aggregate git add select"
-    },
-    {
-      "parameters": {
-        "mode": "raw",
-        "jsonOutput": "={\n  \"files to pull\": {{ $json[\"files to pull force\"] }}\n}\n ",
-        "includeOtherFields": true,
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        1420,
-        200
-      ],
-      "id": "efb33eda-cc4b-4a49-a0f0-7d3efd33006e",
-      "name": "files to pull"
-    },
-    {
-      "parameters": {
         "conditions": {
           "options": {
             "caseSensitive": true,
@@ -560,6 +512,54 @@
       ],
       "id": "fdf434de-9efb-472a-a3d6-8eba3042f16c",
       "name": "Filter in files to pull update"
+    },
+    {
+      "parameters": {
+        "defineForm": "json",
+        "jsonOutput": "=[\n   {\n\t\t\"fieldLabel\": \"files to pull force\",\n\t\t\"fieldType\": \"dropdown\",\n\t\t\"fieldOptions\": {\n\t\t\t\"values\": {{ $json.data }}\n\t\t},\n\t\t\"requiredField\": false,\n        \"multiselect\": true \n\t}\n]",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "position": [
+        2960,
+        320
+      ],
+      "id": "f5950673-059b-4d91-81ca-e908bc5ded96",
+      "name": "git add",
+      "webhookId": "d201245c-1175-4b37-a089-0995bf637b2f"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "include": "specifiedFields",
+        "fieldsToInclude": "option",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2740,
+        320
+      ],
+      "id": "dcf681b5-4389-465f-a180-44b594053b69",
+      "name": "Aggregate git add select"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"files to pull\": {{ $json[\"files to pull force\"] }}\n}\n ",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3180,
+        320
+      ],
+      "id": "eccecfae-aa50-4328-acee-80f59fabddd5",
+      "name": "files to pull"
     }
   ],
   "connections": {
@@ -595,6 +595,11 @@
         [
           {
             "node": "Filter in files to pull update",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Aggregate git add select",
             "type": "main",
             "index": 0
           }
@@ -711,11 +716,6 @@
             "node": "n8n_workflow",
             "type": "main",
             "index": 0
-          },
-          {
-            "node": "Aggregate git add select",
-            "type": "main",
-            "index": 0
           }
         ]
       ]
@@ -818,6 +818,17 @@
         ]
       ]
     },
+    "Filter in files to pull update": {
+      "main": [
+        [
+          {
+            "node": "update workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "git add": {
       "main": [
         [
@@ -839,17 +850,6 @@
           }
         ]
       ]
-    },
-    "Filter in files to pull update": {
-      "main": [
-        [
-          {
-            "node": "update workflow",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
     }
   },
   "settings": {
@@ -860,7 +860,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "f8c0a72f-29c3-407b-88f8-64fbf0071102",
+  "versionId": "e13f9171-489c-4e64-bbc4-eaf1272b70af",
   "triggerCount": 0,
   "tags": [],
   "fileName": "git-pull-force.json",
