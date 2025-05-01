@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-04-15T19:30:49.651Z",
-  "updatedAt": "2025-05-01T14:58:53.000Z",
+  "updatedAt": "2025-05-01T20:25:27.000Z",
   "id": "h4IaVqG7YjldMsXK",
   "name": "Git Commit",
   "active": true,
@@ -19,7 +19,7 @@
       "typeVersion": 2,
       "position": [
         -2300,
-        0
+        140
       ]
     },
     {
@@ -41,7 +41,7 @@
       "typeVersion": 2,
       "position": [
         -2080,
-        0
+        140
       ]
     },
     {
@@ -67,7 +67,7 @@
       "typeVersion": 1,
       "position": [
         -1200,
-        450
+        340
       ],
       "alwaysOutputData": true,
       "credentials": {
@@ -89,7 +89,7 @@
       "typeVersion": 1,
       "position": [
         -1860,
-        -200
+        -210
       ],
       "credentials": {
         "n8nApi": {
@@ -122,7 +122,7 @@
       "typeVersion": 1,
       "position": [
         120,
-        200
+        240
       ],
       "credentials": {
         "githubOAuth2Api": {
@@ -142,7 +142,7 @@
       "typeVersion": 3.4,
       "position": [
         -2520,
-        0
+        140
       ],
       "id": "8429a2ba-08c9-4ae4-b58a-b504b2294b38",
       "name": "git_repos"
@@ -153,20 +153,27 @@
         "formFields": {
           "values": [
             {
-              "fieldLabel": "commit",
-              "placeholder": "commit message"
+              "fieldLabel": "Sure ?",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "sure !"
+                  }
+                ]
+              }
             }
           ]
         },
         "options": {
-          "appendAttribution": false
+          "path": "commit"
         }
       },
       "type": "n8n-nodes-base.formTrigger",
       "typeVersion": 2.2,
       "position": [
         -2740,
-        0
+        140
       ],
       "id": "eb1018e2-a3b3-4f7b-a0e6-abfe22d3d542",
       "name": "On form submission",
@@ -189,7 +196,7 @@
         },
         "filePath": "={{ $('git_repos').first().json.folder }}/{{ $('Check if file changed').item.json.git.fileName }}",
         "fileContent": "={{ $('IndentJsonUpload').item.json.string }}",
-        "commitMessage": "={{ $('On form submission').first().json.commit }}"
+        "commitMessage": "={{ $('git add update').first().json.commit }}"
       },
       "id": "ac955b0e-caae-43d2-a098-7d5c8a166b26",
       "name": "Update file [GITHUB]",
@@ -197,7 +204,7 @@
       "typeVersion": 1,
       "position": [
         1440,
-        0
+        -60
       ],
       "credentials": {
         "githubOAuth2Api": {
@@ -215,7 +222,7 @@
       "typeVersion": 4.2,
       "position": [
         -320,
-        0
+        -160
       ],
       "id": "f80860ad-292a-4526-ad05-8eaf5a2d3c21",
       "name": "HTTP Request",
@@ -224,7 +231,7 @@
     {
       "parameters": {
         "mode": "raw",
-        "jsonOutput": "={\n  \"gitVersionId\": \"{{ $json.git.versionId }}\",\n  \"currentVersionId\": \"{{ $json.current.versionId }}\"\n}",
+        "jsonOutput": "={\n  \"gitVersionId\": \"{{ $json.git.versionId }}\",\n  \"currentVersionId\": \"{{ $json.current.versionId }}\",\n  \"option\": \"{{ $json.current.fileName }}\"\n}",
         "includeOtherFields": true,
         "options": {}
       },
@@ -232,7 +239,7 @@
       "typeVersion": 3.4,
       "position": [
         340,
-        0
+        -160
       ],
       "id": "742b755c-208a-4b97-a3ec-5e87a8a3d758",
       "name": "versionIds"
@@ -248,7 +255,7 @@
       "typeVersion": 3.4,
       "position": [
         -540,
-        0
+        -160
       ],
       "id": "f339ad8f-fcf4-447d-adef-ffc08bd28e93",
       "name": "url",
@@ -269,7 +276,7 @@
       "typeVersion": 1,
       "position": [
         -980,
-        450
+        340
       ],
       "id": "21abdc6d-e3aa-4ee8-9f06-2ec836844c2f",
       "name": "Sorted git files"
@@ -289,7 +296,7 @@
       "typeVersion": 1,
       "position": [
         -1420,
-        -200
+        -210
       ],
       "id": "70a233d6-bb1c-404b-84ce-5bf5fe5776ea",
       "name": "Sorted workflows"
@@ -305,7 +312,7 @@
       "typeVersion": 3.4,
       "position": [
         -1640,
-        -200
+        -210
       ],
       "id": "cf88587e-1a43-4ef1-ad8b-9bb8a11209fa",
       "name": "set fileName"
@@ -321,7 +328,7 @@
       "typeVersion": 3.4,
       "position": [
         -980,
-        -50
+        -210
       ],
       "id": "ae973906-63a9-46e9-b4fe-fd05998b3530",
       "name": "n8n_workflow"
@@ -337,7 +344,7 @@
       "typeVersion": 3.4,
       "position": [
         -100,
-        0
+        -160
       ],
       "id": "c79ec67f-d9db-4034-b78c-8df43c86c60c",
       "name": "git"
@@ -353,7 +360,7 @@
       "typeVersion": 3.4,
       "position": [
         120,
-        0
+        -160
       ],
       "id": "bc6214b5-2268-4bc9-856f-8bdc7bc9cf44",
       "name": "current"
@@ -369,7 +376,7 @@
       "typeVersion": 3.4,
       "position": [
         -1200,
-        -200
+        -210
       ],
       "id": "31553a09-5e8f-4f5e-942a-370331b2a572",
       "name": "reset fileName"
@@ -384,7 +391,7 @@
       "typeVersion": 3.4,
       "position": [
         -540,
-        200
+        140
       ],
       "id": "78ab9e3b-e0d3-4ea4-b397-9495c2822182",
       "name": "get workflow",
@@ -400,7 +407,7 @@
       "typeVersion": 3.4,
       "position": [
         1000,
-        0
+        -60
       ],
       "id": "d6c82cc8-baf5-4d7e-b2b5-ca0181ea28f2",
       "name": "set current for updload"
@@ -423,7 +430,7 @@
       "typeVersion": 3.1,
       "position": [
         -760,
-        0
+        -160
       ],
       "id": "d5ecd191-1a59-4b32-b0fd-1911fc5f837a",
       "name": "Filter gited and in n8n"
@@ -448,7 +455,7 @@
       "typeVersion": 3.1,
       "position": [
         -760,
-        400
+        340
       ],
       "id": "4f754ed4-c6d9-4411-b6cb-503478acde8c",
       "name": "Filter gited and not in n8n"
@@ -473,7 +480,7 @@
       "typeVersion": 3.1,
       "position": [
         -760,
-        200
+        140
       ],
       "id": "7a7e042f-8c6e-4a64-aaaa-d2b80a2fe0d7",
       "name": "Filter in n8n not gited"
@@ -486,7 +493,7 @@
       "typeVersion": 2,
       "position": [
         1220,
-        0
+        -60
       ],
       "id": "5b3c00dc-2708-4878-b9b2-51e14afe6d0c",
       "name": "IndentJsonUpload"
@@ -499,26 +506,10 @@
       "typeVersion": 2,
       "position": [
         -320,
-        200
+        140
       ],
       "id": "d9f01600-1e56-498b-b458-e298ab66dd0f",
       "name": "IndentJsonUpload1"
-    },
-    {
-      "parameters": {
-        "defineForm": "json",
-        "jsonOutput": "=[\n   {\n\t\t\"fieldLabel\": \"file to commit\",\n\t\t\"fieldType\": \"dropdown\",\n\t\t\"fieldOptions\": {\n\t\t\t\"values\": {{ $json.data }}\n\t\t},\n\t\t\"requiredField\": true,\n        \"multiselect\": true \n\t}\n]",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.form",
-      "typeVersion": 1,
-      "position": [
-        -760,
-        -300
-      ],
-      "id": "036b89cc-caf6-4917-9716-b6cbad428350",
-      "name": "git add",
-      "webhookId": "d201245c-1175-4b37-a089-0995bf637b2f"
     },
     {
       "parameters": {
@@ -530,8 +521,8 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        -980,
-        -300
+        780,
+        -260
       ],
       "id": "d8b7f6ae-04b8-4d82-b3f6-1d27b4e81264",
       "name": "Aggregate git add select"
@@ -539,15 +530,15 @@
     {
       "parameters": {
         "mode": "raw",
-        "jsonOutput": "={\n  \"file to commit\": {{ $json[\"file to commit\"] }}\n}\n ",
+        "jsonOutput": "={\n  \"file to commit\": {{ $json[\"file to commit (update)\"] }}\n}\n ",
         "includeOtherFields": true,
         "options": {}
       },
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -540,
-        -300
+        1220,
+        -260
       ],
       "id": "026f76b6-a388-486e-9081-9ace48bd2fbb",
       "name": "files to commit"
@@ -564,7 +555,7 @@
           "conditions": [
             {
               "id": "2c6c86b3-b6fc-40a5-9d5a-87ba92096112",
-              "leftValue": "={{ $('files to commit').first().json['file to commit'] }}",
+              "leftValue": "={{ $('files to commit1').first().json['file to commit'] }}",
               "rightValue": "={{ $json.fileName }}",
               "operator": {
                 "type": "array",
@@ -581,7 +572,7 @@
       "typeVersion": 2.2,
       "position": [
         -100,
-        200
+        240
       ],
       "id": "dcae7a3b-fade-462e-acd3-8ac18c60982e",
       "name": "Filter in files to commit add"
@@ -605,6 +596,16 @@
                 "operation": "contains",
                 "rightType": "any"
               }
+            },
+            {
+              "id": "9eebeec3-5d78-4564-a1d9-69ceb8ac00b2",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
             }
           ],
           "combinator": "and"
@@ -615,7 +616,7 @@
       "typeVersion": 2.2,
       "position": [
         780,
-        0
+        -60
       ],
       "id": "162cf082-90c3-4ba6-93f3-0b9599841a19",
       "name": "Filter in files to commit update"
@@ -651,9 +652,73 @@
       "typeVersion": 1,
       "position": [
         560,
-        0
+        -160
       ],
       "notes": "{{ $json.data?.parseJson().versionId }}"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "include": "specifiedFields",
+        "fieldsToInclude": "option",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        40
+      ],
+      "id": "5d82846a-c553-45d6-a1e6-ab8428d4b3a0",
+      "name": "Aggregate git add select1"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"file to commit\": {{ $json[\"file to commit (untracked)\"] }}\n}\n ",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        340,
+        40
+      ],
+      "id": "73dc885b-fcba-483d-b67f-4128d25065ef",
+      "name": "files to commit1"
+    },
+    {
+      "parameters": {
+        "defineForm": "json",
+        "jsonOutput": "=[\n    {\n        \"fieldLabel\": \"commit message\",\n\t\t\"placeholder\": \"commit message\"\n\t},\n   {\n\t\t\"fieldLabel\": \"file to commit (untracked)\",\n\t\t\"fieldType\": \"dropdown\",\n\t\t\"fieldOptions\": {\n\t\t\t\"values\": {{ $json.data }}\n\t\t},\n\t\t\"requiredField\": false,\n        \"multiselect\": true \n\t}\n]",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "position": [
+        120,
+        40
+      ],
+      "id": "b2c663f1-3cae-499a-ac9d-8066ad58756e",
+      "name": "git add untracked",
+      "webhookId": "d201245c-1175-4b37-a089-0995bf637b2f"
+    },
+    {
+      "parameters": {
+        "defineForm": "json",
+        "jsonOutput": "=[\n    {\n        \"fieldLabel\": \"commit message\",\n\t\t\"placeholder\": \"commit message\"\n\t},\n   {\n\t\t\"fieldLabel\": \"file to commit (update)\",\n\t\t\"fieldType\": \"dropdown\",\n\t\t\"fieldOptions\": {\n\t\t\t\"values\": {{ $json.data }}\n\t\t},\n\t\t\"requiredField\": false,\n        \"multiselect\": true \n\t}\n]",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        -260
+      ],
+      "id": "036b89cc-caf6-4917-9716-b6cbad428350",
+      "name": "git add update",
+      "webhookId": "d201245c-1175-4b37-a089-0995bf637b2f"
     }
   ],
   "connections": {
@@ -861,11 +926,6 @@
       "main": [
         [
           {
-            "node": "Aggregate git add select",
-            "type": "main",
-            "index": 0
-          },
-          {
             "node": "n8n_workflow",
             "type": "main",
             "index": 0
@@ -935,15 +995,9 @@
             "node": "Filter in files to commit add",
             "type": "main",
             "index": 0
-          }
-        ]
-      ]
-    },
-    "git add": {
-      "main": [
-        [
+          },
           {
-            "node": "files to commit",
+            "node": "Aggregate git add select1",
             "type": "main",
             "index": 0
           }
@@ -954,7 +1008,7 @@
       "main": [
         [
           {
-            "node": "git add",
+            "node": "git add update",
             "type": "main",
             "index": 0
           }
@@ -995,6 +1049,44 @@
             "node": "Filter in files to commit update",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Aggregate git add select",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate git add select1": {
+      "main": [
+        [
+          {
+            "node": "git add untracked",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "git add untracked": {
+      "main": [
+        [
+          {
+            "node": "files to commit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "git add update": {
+      "main": [
+        [
+          {
+            "node": "files to commit",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -1008,7 +1100,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "4be87c01-2da3-47e6-8c66-f3456d0724a0",
+  "versionId": "bb37f2d8-33ad-406e-9a6f-7e2ce02b26b5",
   "triggerCount": 2,
   "tags": [],
   "fileName": "git-commit.json",
