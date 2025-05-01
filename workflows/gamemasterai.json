@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-04-30T21:16:24.222Z",
-  "updatedAt": "2025-05-01T15:00:07.000Z",
+  "updatedAt": "2025-05-01T15:20:38.000Z",
   "id": "wj7RaQrMYuhNu9Ry",
   "name": "GameMasterAi",
   "active": false,
@@ -91,42 +91,6 @@
     },
     {
       "parameters": {
-        "operation": "fromJson",
-        "destinationKey": "=data",
-        "options": {
-          "encoding": "utf8",
-          "keepSource": "json"
-        }
-      },
-      "type": "n8n-nodes-base.extractFromFile",
-      "typeVersion": 1,
-      "position": [
-        440,
-        -40
-      ],
-      "id": "e2e5c060-3d21-4255-beb1-7f21ba8302cc",
-      "name": "Extract from File"
-    },
-    {
-      "parameters": {
-        "operation": "fromJson",
-        "destinationKey": "=data",
-        "options": {
-          "encoding": "utf8",
-          "keepSource": "json"
-        }
-      },
-      "type": "n8n-nodes-base.extractFromFile",
-      "typeVersion": 1,
-      "position": [
-        440,
-        160
-      ],
-      "id": "1c44d3a1-b856-40c7-80d2-1f8eb342b88b",
-      "name": "Extract from File1"
-    },
-    {
-      "parameters": {
         "httpMethod": "POST",
         "path": "play",
         "options": {}
@@ -182,24 +146,6 @@
       "webhookId": "8eeddfbb-52cb-4c47-977e-10b94e0b88d5",
       "notesInFlow": true,
       "notes": "/games"
-    },
-    {
-      "parameters": {
-        "operation": "fromJson",
-        "destinationKey": "=data",
-        "options": {
-          "encoding": "utf8",
-          "keepSource": "json"
-        }
-      },
-      "type": "n8n-nodes-base.extractFromFile",
-      "typeVersion": 1,
-      "position": [
-        660,
-        -20
-      ],
-      "id": "fb69b063-d950-43af-b328-3a10424f1a87",
-      "name": "Extract from File2"
     }
   ],
   "connections": {
@@ -270,8 +216,8 @@
   "staticData": null,
   "meta": null,
   "pinData": {},
-  "versionId": "88797487-ead9-4277-9989-c6b5b89c3c59",
-  "triggerCount": 0,
+  "versionId": "466904f3-bb35-4d5f-adf4-543d7bf5ca03",
+  "triggerCount": 5,
   "tags": [],
   "fileName": "gamemasterai.json",
   "option": "gamemasterai.json"
