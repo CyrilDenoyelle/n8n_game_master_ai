@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-04-15T19:30:49.651Z",
-  "updatedAt": "2025-05-01T20:38:31.000Z",
+  "updatedAt": "2025-05-02T11:15:42.000Z",
   "id": "h4IaVqG7YjldMsXK",
   "name": "Git Commit",
   "active": true,
@@ -114,7 +114,7 @@
         },
         "filePath": "={{ $('git_repos').first().json.folder }}/{{ $('n8n_workflow').item.json.fileName }}",
         "fileContent": "={{ $('IndentJsonUpload1').item.json.string }}",
-        "commitMessage": "={{ $('On form submission').first().json.commit }}"
+        "commitMessage": "={{ $('git add untracked').first().json[\"commit message\"] }}"
       },
       "id": "03f69ebf-8438-4ca8-9c98-6a6250a503ed",
       "name": "Upload file [GITHUB]",
@@ -1100,7 +1100,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "dcd02052-027c-4608-9e9e-4a550d271022",
+  "versionId": "e8243198-623e-44d8-9bb7-9f237df8e57a",
   "triggerCount": 2,
   "tags": [],
   "fileName": "git-commit.json",
