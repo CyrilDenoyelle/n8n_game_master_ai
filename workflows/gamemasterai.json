@@ -1,9 +1,9 @@
 {
   "createdAt": "2025-04-30T21:16:24.222Z",
-  "updatedAt": "2025-05-01T15:20:38.000Z",
+  "updatedAt": "2025-05-02T09:40:03.000Z",
   "id": "wj7RaQrMYuhNu9Ry",
   "name": "GameMasterAi",
-  "active": false,
+  "active": true,
   "nodes": [
     {
       "parameters": {
@@ -216,7 +216,7 @@
   "staticData": null,
   "meta": null,
   "pinData": {},
-  "versionId": "466904f3-bb35-4d5f-adf4-543d7bf5ca03",
+  "versionId": "71f6f88f-51dd-4548-93d8-d21236fd5046",
   "triggerCount": 5,
   "tags": [],
   "fileName": "gamemasterai.json",
