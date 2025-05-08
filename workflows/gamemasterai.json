@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-04-30T21:16:24.222Z",
-  "updatedAt": "2025-05-08T14:33:22.000Z",
+  "updatedAt": "2025-05-08T15:26:37.000Z",
   "id": "wj7RaQrMYuhNu9Ry",
   "name": "GameMasterAi",
   "active": true,
@@ -17,8 +17,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.8,
       "position": [
-        260,
-        530
+        440,
+        460
       ],
       "id": "54a76046-c57e-47b4-bfc3-9e95564ff64c",
       "name": "AI Agent",
@@ -36,8 +36,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        220,
-        740
+        380,
+        680
       ],
       "id": "441cead4-2695-49cc-8c78-56ed70f60e27",
       "name": "OpenAI Chat Model",
@@ -67,8 +67,8 @@
       "type": "n8n-nodes-base.discord",
       "typeVersion": 2,
       "position": [
-        856,
-        455
+        1036,
+        360
       ],
       "id": "5e6e055d-6898-407d-a149-8156e11ead4d",
       "name": "Discord1",
@@ -89,8 +89,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -620,
-        455
+        -1100,
+        310
       ],
       "id": "2d3a7301-e6f9-49fc-8483-04aec982e3d1",
       "name": "Webhook Play",
@@ -108,8 +108,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -400,
-        455
+        -880,
+        310
       ],
       "id": "4a30ee11-8b7b-418a-8f5c-27647aff266b",
       "name": "Format message json"
@@ -124,8 +124,8 @@
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.1,
       "position": [
-        -400,
-        680
+        -880,
+        635
       ],
       "id": "2d7da65c-799f-4522-8d4f-c26adce58e15",
       "name": "When chat message received",
@@ -159,8 +159,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        636,
-        530
+        816,
+        460
       ],
       "id": "a0830144-ff87-45f3-b8e9-ce8baac2a225",
       "name": "If discord message",
@@ -175,8 +175,8 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.2,
       "position": [
-        856,
-        655
+        1036,
+        560
       ],
       "id": "607f4cde-b447-4c68-a452-1865036a35c9",
       "name": "Respond to Webhook"
@@ -189,50 +189,16 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        340,
-        760
+        500,
+        680
       ],
       "id": "c8d91295-55ed-4fa2-9f53-df0c007eb42d",
       "name": "Simple Memory"
     },
     {
       "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "YyqQZpBGsGmZLS5E",
-          "mode": "list",
-          "cachedResultName": "GetOrCreate"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "folderName": "GameMasterAi",
-            "fileName": "={{ $json.sessionId }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "folderName",
-              "displayName": "folderName",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string"
-            },
-            {
-              "id": "fileName",
-              "displayName": "fileName",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string"
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
+        "source": "parameter",
+        "workflowJson": "={{ $json.toJsonString() }}",
         "options": {
           "waitForSubWorkflow": true
         }
@@ -240,8 +206,8 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        -180,
-        380
+        0,
+        310
       ],
       "id": "4fe560f1-0be9-4402-9cc3-9b4acbbc6fc5",
       "name": "getOrCreate"
@@ -255,11 +221,80 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.1,
       "position": [
-        40,
-        530
+        220,
+        460
       ],
       "id": "ee394571-3376-42da-96bc-fe922f582b83",
       "name": "Merge"
+    },
+    {
+      "parameters": {
+        "filters": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        -660,
+        160
+      ],
+      "id": "ff6e41e6-61f6-47c0-a8ee-5ae2172cf4ee",
+      "name": "n8n",
+      "credentials": {
+        "n8nApi": {
+          "id": "Vr1cbGSerVjbjeY5",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ade7afde-25ea-4f3f-99be-fd734bfe6234",
+              "leftValue": "={{ $json.name }}",
+              "rightValue": "GetOrCreateGame",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -440,
+        160
+      ],
+      "id": "4224c2da-d852-44f4-ab05-45049c89af17",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        -220,
+        310
+      ],
+      "id": "fdef0e4d-0d1e-46f0-bd7d-685d78e316c4",
+      "name": "Merge1"
     }
   ],
   "connections": {
@@ -300,12 +335,17 @@
       "main": [
         [
           {
-            "node": "getOrCreate",
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "n8n",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Merge",
+            "node": "Merge1",
             "type": "main",
             "index": 1
           }
@@ -321,9 +361,14 @@
             "index": 1
           },
           {
-            "node": "getOrCreate",
+            "node": "n8n",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
           }
         ]
       ]
@@ -378,6 +423,39 @@
           }
         ]
       ]
+    },
+    "n8n": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "getOrCreate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -388,7 +466,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "8ecc1257-545a-4e9c-ad1a-02a32bd4326d",
+  "versionId": "098ce5f0-852c-4eab-a86f-99704e4fdcbf",
   "triggerCount": 2,
   "tags": [],
   "fileName": "gamemasterai.json",
