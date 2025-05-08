@@ -1,0 +1,447 @@
+{
+  "createdAt": "2025-05-08T14:35:07.804Z",
+  "updatedAt": "2025-05-08T14:45:35.000Z",
+  "id": "ajQuTXa9pu65AdiK",
+  "name": "UpdateGame",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {
+          "includeUnpaired": true
+        }
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        -520,
+        280
+      ],
+      "id": "5fce3399-f840-4a45-ac2f-e195a817f469",
+      "name": "Merge"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -960,
+        220
+      ],
+      "id": "17d51995-324a-4c8c-b13b-9ca560831617",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {
+          "includeUnpaired": true
+        }
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        360,
+        140
+      ],
+      "id": "9b57f607-63ac-433e-88d7-ab9d2a70914c",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f902f7c7-7c2f-485f-a71c-46083347cc87",
+              "leftValue": "={{ $json.folder }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -300,
+        280
+      ],
+      "id": "c88bb236-7e99-4e39-9071-7bb5a6f3bef2",
+      "name": "If folder exist"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f902f7c7-7c2f-485f-a71c-46083347cc87",
+              "leftValue": "={{ $json.file }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        580,
+        140
+      ],
+      "id": "1f15ca37-ddd8-43cd-841d-241260e6f7c1",
+      "name": "If file exist"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"folder\": {\n    \"id\": \"{{ $json.id }}\",\n    \"name\": \"{{ $json.name }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -740,
+        220
+      ],
+      "id": "25af3a00-7ae4-442e-8646-80a3fd306a62",
+      "name": "Folder"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"file\": {\n    \"id\": \"{{ $json.id }}\",\n    \"name\": \"{{ $json.name }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        140,
+        60
+      ],
+      "id": "d64e3823-9035-4048-ba7d-abcc3e3fbe67",
+      "name": "File"
+    },
+    {
+      "parameters": {
+        "inputSource": "jsonExample",
+        "jsonExample": "{\n  \"folderName\": \"a string\",\n  \"fileName\": \"a string\",\n  \"jsonContent\": \"json\"\n}"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1540,
+        340
+      ],
+      "id": "ab610146-3ec7-4931-88df-0cc04185ef4a",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "queryString": "={{ $json.fileName }}",
+        "filter": {
+          "whatToSearch": "files"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -80,
+        60
+      ],
+      "id": "fb0b9d13-1c8b-43ae-bf0e-06b925bf2271",
+      "name": "Get Game File",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "ph4PvkddLG1s28Hi",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "queryString": "={{ $json.folderName }}",
+        "filter": {
+          "folderId": {
+            "mode": "list",
+            "value": "root",
+            "cachedResultName": "/ (Root folder)"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -1180,
+        220
+      ],
+      "id": "7bd30ff6-0cb5-41f8-8875-ace6651f96f4",
+      "name": "Get Folder",
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "ph4PvkddLG1s28Hi",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('File').item.json.file.id }}",
+          "mode": "id"
+        },
+        "changeFileContent": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1380,
+        80
+      ],
+      "id": "bdc5402d-14ad-49d0-b9a7-67e7db80bc35",
+      "name": "Update Game Data",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "ph4PvkddLG1s28Hi",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "mode": "each",
+        "options": {
+          "format": true
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        100
+      ],
+      "id": "2febb946-e6db-4dc0-bdd5-4673d434df87",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={{ $json.jsonContent }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        900,
+        120
+      ],
+      "id": "e225bb9d-74f1-412b-b826-c5fab9a87234",
+      "name": "Set jsonContent"
+    }
+  ],
+  "connections": {
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "If folder exist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "If file exist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If folder exist": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Get Game File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If file exist": {
+      "main": [
+        [
+          {
+            "node": "Set jsonContent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Folder": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Get Folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Game File": {
+      "main": [
+        [
+          {
+            "node": "File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Folder": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Game Data": {
+      "main": [
+        []
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Update Game Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set jsonContent": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "folderName": "GameMasterAi",
+          "fileName": "111a43454616494eb945a7aa907cc9f5",
+          "jsonContent": "{ \"coucou\": \"coucou value\" }"
+        }
+      }
+    ]
+  },
+  "versionId": "e2b40e79-419d-45aa-9897-b028b3f475dd",
+  "triggerCount": 0,
+  "tags": [],
+  "fileName": "updategame.json",
+  "option": "updategame.json"
+}
