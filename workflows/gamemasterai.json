@@ -1,28 +1,30 @@
 {
   "createdAt": "2025-04-30T21:16:24.222Z",
-  "updatedAt": "2025-05-08T15:26:37.000Z",
+  "updatedAt": "2025-07-28T17:10:41.000Z",
   "id": "wj7RaQrMYuhNu9Ry",
   "name": "GameMasterAi",
-  "active": true,
+  "active": false,
+  "isArchived": false,
   "nodes": [
     {
       "parameters": {
         "promptType": "define",
         "text": "={{ $('When chat message received').item.json.chatInput }}",
         "options": {
-          "systemMessage": "Tu es un Maître du Jeu (MJ) pour une partie de jeu de rôle sur table dans un univers de fantasy.\n\nTon rôle est de :\n- Décrire l’environnement, les situations, les personnages non-joueurs (PNJ).\n- Poser des choix aux joueurs ou leur demander leurs actions.\n- Réagir aux décisions des joueurs avec cohérence et imagination.\n- Faire progresser l’histoire de manière fluide et immersive.\n- Ajouter parfois des défis, des mystères, des combats ou des dilemmes.\n\nUtilise un ton narratif immersif, vivant et engageant.\n\nNe prends pas de décisions à la place des joueurs. Pose des questions s’il faut clarifier une intention.\n\nTu peux inventer :\n- Des lieux (villes, forêts, ruines…)\n- Des créatures (amicales ou hostiles)\n- Des objets étranges ou magiques\n- Des événements ou retournements\n\nCommence par une courte introduction du/des personnage(s) joueur(s).\nPuis met les joueurs directement dans l'action.\n\n# Outils:\n## mémoire\nutilise cet outil pour mettre des choses en mémoire",
+          "systemMessage": "=# Role:\n\nTu es un Maître du Jeu (MJ) pour une partie de jeu de rôle sur table.\n\nTon rôle est de :\n- Décrire l’environnement, les situations, les personnages non-joueurs (PNJ).\n- Poser des choix aux joueurs ou leur demander leurs actions.\n- Réagir aux décisions des joueurs avec cohérence et imagination.\n- Faire progresser l’histoire de manière fluide et immersive.\n- Ajouter parfois des défis, des mystères, des combats ou des dilemmes.\n\nUtilise un ton narratif immersif, vivant et engageant.\n\nNe prends pas de décisions à la place des joueurs. Pose des questions s’il faut clarifier une intention.\n\nTu peux inventer: lieux, personnages, créatures, objets, événements, retournements.\n\nCommence par une courte introduction du/des personnage(s) joueur(s).\nPuis met les joueurs directement dans l'action.\n\nMet les objets et personnages important en évidence en les décrivant plus en détails\n\n# Memory indexes:\n{{ $('FormatMemoryIndex').item.json.memoryIndexes }} {{ $if($('getOrCreate').item.json.isEmpty(), `(pas encore de souvenir)`, ``) }}\n\n# Outils:\n## Get key in Memory indexes.\nUtilise cet outil pour récupérer, dans \"Memory indexes\", une ou des infos dont tu a besoin, sur un personnage du jeu ou un endroit.\nDonne lui une liste de chemins, a un format comme: \"characters.[CharacterName].mod.charism\" pour récupérer le modificateur de charisme d'un personnage donné, ou \"places.[PlaceName].remainingObjects\" pour récupérer les objets qui restent a trouver dans un endroit donné. (remplace [keyName] par le nom de l'entité)",
           "returnIntermediateSteps": true
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.8,
       "position": [
-        440,
-        460
+        32,
+        445.5
       ],
       "id": "54a76046-c57e-47b4-bfc3-9e95564ff64c",
       "name": "AI Agent",
-      "notesInFlow": true
+      "notesInFlow": true,
+      "notes": "## Save to memory\nUtilise cet outil pour mettre **toutes** les informations connues dans \"Memory indexes\".\nEn respectant une logique de rangement, par exemple \"characters.[CharacterName].mod.charism\" pour des stats de personnage, ou \"places.[PlaceName].remainingObjects\" pour des informations sur un lieu."
     },
     {
       "parameters": {
@@ -31,13 +33,15 @@
           "mode": "list",
           "value": "gpt-4o-mini"
         },
-        "options": {}
+        "options": {
+          "maxRetries": 3
+        }
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        380,
-        680
+        0,
+        665.5
       ],
       "id": "441cead4-2695-49cc-8c78-56ed70f60e27",
       "name": "OpenAI Chat Model",
@@ -67,8 +71,8 @@
       "type": "n8n-nodes-base.discord",
       "typeVersion": 2,
       "position": [
-        1036,
-        360
+        816,
+        595.5
       ],
       "id": "5e6e055d-6898-407d-a149-8156e11ead4d",
       "name": "Discord1",
@@ -89,8 +93,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -1100,
-        310
+        -2200,
+        295.5
       ],
       "id": "2d3a7301-e6f9-49fc-8483-04aec982e3d1",
       "name": "Webhook Play",
@@ -108,8 +112,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -880,
-        310
+        -1980,
+        295.5
       ],
       "id": "4a30ee11-8b7b-418a-8f5c-27647aff266b",
       "name": "Format message json"
@@ -124,8 +128,8 @@
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.1,
       "position": [
-        -880,
-        635
+        -1980,
+        620.5
       ],
       "id": "2d7da65c-799f-4522-8d4f-c26adce58e15",
       "name": "When chat message received",
@@ -159,8 +163,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        816,
-        460
+        518,
+        695.5
       ],
       "id": "a0830144-ff87-45f3-b8e9-ce8baac2a225",
       "name": "If discord message",
@@ -175,30 +179,17 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.2,
       "position": [
-        1036,
-        560
+        816,
+        795.5
       ],
       "id": "607f4cde-b447-4c68-a452-1865036a35c9",
       "name": "Respond to Webhook"
     },
     {
       "parameters": {
-        "sessionIdType": "customKey",
-        "sessionKey": "={{ $('When chat message received').item.json.sessionId }}"
-      },
-      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
-      "typeVersion": 1.3,
-      "position": [
-        500,
-        680
-      ],
-      "id": "c8d91295-55ed-4fa2-9f53-df0c007eb42d",
-      "name": "Simple Memory"
-    },
-    {
-      "parameters": {
         "source": "parameter",
         "workflowJson": "={{ $json.toJsonString() }}",
+        "mode": "each",
         "options": {
           "waitForSubWorkflow": true
         }
@@ -206,8 +197,8 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        0,
-        310
+        -880,
+        145.5
       ],
       "id": "4fe560f1-0be9-4402-9cc3-9b4acbbc6fc5",
       "name": "getOrCreate"
@@ -221,8 +212,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.1,
       "position": [
-        220,
-        460
+        -440,
+        445.5
       ],
       "id": "ee394571-3376-42da-96bc-fe922f582b83",
       "name": "Merge"
@@ -235,8 +226,8 @@
       "type": "n8n-nodes-base.n8n",
       "typeVersion": 1,
       "position": [
-        -660,
-        160
+        -1760,
+        -4.5
       ],
       "id": "ff6e41e6-61f6-47c0-a8ee-5ae2172cf4ee",
       "name": "n8n",
@@ -246,6 +237,399 @@
           "name": "n8n account"
         }
       }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        -1320,
+        145.5
+      ],
+      "id": "fdef0e4d-0d1e-46f0-bd7d-685d78e316c4",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst results = [];\n\nfor (const item of $input.all()) {\n  const memory = item.json.memory;\n  const paths = item.json.request;\n\n  function getValueByPath(obj, path) {\n    return path.split('.').reduce((o, key) => {\n      if (o && typeof o === 'object' && key in o) {\n        return o[key];\n      } else {\n        return null;\n      }\n    }, obj);\n  }\n\n  // paths.forEach((path) => {\n  //   item.json[path] = getValueByPath(memory, path)\n  // })\n\n  results.push({\n    json: {\n      values: paths.map((path) => {\n        return { [path]: getValueByPath(memory, path) }\n      })\n    }\n  });\n}\n\nreturn results"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1760,
+        1535.5
+      ],
+      "id": "a0eb887a-49a4-4ebd-9755-de8f63823450",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "content": "```json\n[\n  {\n    \"memory\": {\n      \"worldState\": {\n        \"currentWeather\": \"il fait beau\",\n        \"timeOfDay\": \"matin\"\n      },\n      \"characters\": {\n        \"Eloria\": {\n          \"description\": \"Guérisseuse du village\",\n          \"metAt\": \"villageDuNord\"\n        }\n      }\n    },\n    \"request\": [\n      \"characters.Eloria\",\n      \"worldState.currentWeather\",\n      \"characters.Seedess\"\n    ]\n  }\n]\n```",
+        "height": 400,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2340,
+        -500
+      ],
+      "id": "45a3cf88-a35d-4ed6-b6da-b13fd7d0080e",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "\n{\n  \"memory\": {\n    \"worldState\": {\n      \"currentWeather\": \"il fait beau\",\n      \"timeOfDay\": \"matin\"\n    },\n    \"characters\": {\n      \"Eloria\": {\n        \"description\": \"Guérisseuse du village\",\n        \"metAt\": \"villageDuNord\"\n      }\n    }\n  },\n  \"request\": [\n    \"characters.Eloria\",\n    \"worldState.currentWeather\",\n    \"characters.Seedess\"\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1980,
+        1535.5
+      ],
+      "id": "b67159a7-839e-4b51-bb40-7129b921213d",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "45e40f44-a9c2-4820-b73f-55625a34a147",
+              "name": "folderName",
+              "value": "=GameMasterAi",
+              "type": "string"
+            },
+            {
+              "id": "00a987bd-4fc7-4ae2-9b76-c2b740fbed5b",
+              "name": "fileName",
+              "value": "={{ $json.sessionId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1100,
+        145.5
+      ],
+      "id": "e63f6030-ea91-4dce-8da1-00a644feffab",
+      "name": "SetArgs"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2200,
+        1635.5
+      ],
+      "id": "f69cb2dd-b7d1-4fa6-9758-101754455f90",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"memory\": {\n    \"worldState\": {\n      \"currentWeather\": \"il fait beau\",\n      \"timeOfDay\": \"matin\"\n    },\n    \"characters\": {\n      \"Eloria\": {\n        \"description\": \"Guérisseuse du village\",\n        \"metAt\": \"villageDuNord\"\n      }\n    }\n  },\n  \"fileName\": \"3b347ea7547c4c6b867e20fe1d619bf0\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1980,
+        1735.5
+      ],
+      "id": "77fb0a17-016c-4675-bda6-4f3207fcab59",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "description": "Use this tool to save text to memory.",
+        "jsCode": "// Example: convert the incoming query to uppercase and return it\nreturn \"Souvenir enregistré.\"",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"memory_updates\":{\n      \"type\": \"array\",\n      \"description\": \"every informations you want to store about the new answer or anything related to the current game\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"path\": {\n            \"type\": \"string\",\n            \"description\": \"Path to the data/memory\"\n          },\n          \"new_value\": {\n            \"type\": \"string\",\n            \"description\": \"data/memory to store string/object/array\"\n          } \n        }\n      }\n    }\n  }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.2,
+      "position": [
+        -2200,
+        1055.5
+      ],
+      "id": "a31176c9-1fcc-40d0-92bf-cbd86e3116a8",
+      "name": "Save to memory",
+      "notes": "\"path\": {\n          \"type\": \"string\",\n          \"description\": \"Path to store the data in\"\n        },\n        \"new_value\": {\n          \"type\": \"string\",\n          \"description\": \"data/memory to store\"\n        } "
+    },
+    {
+      "parameters": {
+        "description": "Use this tool to get stats and other informations in characters sheets.",
+        "jsCode": "// Example: convert the incoming query to uppercase and return it\nreturn ''",
+        "specifyInputSchema": true,
+        "jsonSchemaExample": "{\n\t\"paths\": [\"Characters.CharacterName.stats.charisme\", \"places.remainingObjects\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        665.5
+      ],
+      "id": "19488083-dce9-4ff1-98eb-8305c4c041f9",
+      "name": "Get key in Memory indexes",
+      "notes": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"paths\": {\n      \"title\": \"Paths to get\",\n      \"type\": \"array\",\n      \"description\": \"The list of query infos (strings), from \\\"Memory indexes\\\", or to format like Characters.CharacterName.stats.charisme to get the charisme of a givent character, or places.remainingObjects to get a list of remaining object\"\n    }\n  }  \n}"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('When chat message received').item.json.sessionId }}",
+        "contextWindowLength": 3
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        120,
+        680
+      ],
+      "id": "c8d91295-55ed-4fa2-9f53-df0c007eb42d",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "text": "=# Role:\nTu es un assistant d'extraction d'informations pour un système de mémoire de jeu de rôle.\nÀ partir du texte fourni, extrais un maximum de donnée pour mettre à jour le JSON de mémoire du jeu.\nRetourne toutes les informations mentionnées ou clairement impliquées dans le texte. N'invente rien et ne devine pas ce qui n'est pas dit.\n\nLes lieux doivent être représentés comme des objets avec au minimum un description détaillé.\nLes ellements historiques aussi doivent apparaitre.\n\nLes personnages doivent être des objets contenant un maximum d'informations et de statistiques style DnD si pertinent.\n\n## Important :\nN'inclus aucun champ dont la valeur est absente ou non déductible du texte.\nUtilise la notation par points (.) pour les chemins des clés (par exemple : characters.Eloria.race).\nN'utilise pas de barres obliques (/) dans les chemins.\nUniquement du json valide, aucune explication en dehors du json, pas de balise ou de \"```\"\n\n# Text:\n{{ $json.output }}",
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"memory\":{\n      \"type\": \"array\",\n      \"description\": \"informations to store\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"path\": {\n            \"type\": \"string\",\n            \"description\": \"Path to the data/memory\"\n          },\n          \"new_value\": {\n            \"type\": \"string\",\n            \"description\": \"data/memory to store\"\n          } \n        }\n      }\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1,
+      "position": [
+        440,
+        245.5
+      ],
+      "id": "2918fe4f-d0fc-4ae1-9aa0-63a537e139b3",
+      "name": "Information Extractor",
+      "retryOnFail": true,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"user_message\": {\n      \"type\": \"string\",\n      \"description\": \"Message to send as answer to the user\"\n    },\n    \"memory_updates\": {\n      \"type\": \"array\",\n      \"description\": \"every informations you want to store about the new answer or anything related to the current game\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"path\": {\n            \"type\": \"string\",\n            \"description\": \"Path to the data/memory\"\n          },\n          \"new_value\": {\n            \"type\": \"string\",\n            \"description\": \"data/memory to store string/object/array\"\n          } \n        }\n      }\n    }\n  }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        -2200,
+        1295.5
+      ],
+      "id": "21c9e947-1001-4761-b370-7086600b07c1",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "filters": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        816,
+        395.5
+      ],
+      "id": "47947088-66f0-403c-a9b3-bcfff2bafef1",
+      "name": "n8n1",
+      "credentials": {
+        "n8nApi": {
+          "id": "Vr1cbGSerVjbjeY5",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ade7afde-25ea-4f3f-99be-fd734bfe6234",
+              "leftValue": "={{ $json.name }}",
+              "rightValue": "SaveGame",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1036,
+        395.5
+      ],
+      "id": "7c323dde-9896-4f4c-a539-c32db24a8dd2",
+      "name": "Filter1"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "numberInputs": 4,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        1280,
+        -80
+      ],
+      "id": "0ac9880d-78eb-4949-ac45-5d97ae636746",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        1916,
+        45.5
+      ],
+      "id": "1b932275-ef36-42b5-8e1d-aa1a2e7d77a9",
+      "name": "Merge3"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "ajQuTXa9pu65AdiK",
+          "mode": "list",
+          "cachedResultName": "SaveGame"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "folderName": "GameMasterAi",
+            "jsonContent": "={{ $json.toJsonString() }}",
+            "fileName": "={{ $json.fileName }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "folderName",
+              "displayName": "folderName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "fileName",
+              "displayName": "fileName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "jsonContent",
+              "displayName": "jsonContent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -1760,
+        1735.5
+      ],
+      "id": "11718205-0624-44e5-a063-18bc0ca871a7",
+      "name": "SaveGame2"
+    },
+    {
+      "parameters": {
+        "source": "parameter",
+        "workflowJson": "={{ $json.toJsonString() }}",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1696,
+        -65
+      ],
+      "id": "721773ab-def6-4b16-adbb-a1e46b31159d",
+      "name": "SaveGame"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "00a987bd-4fc7-4ae2-9b76-c2b740fbed5b",
+              "name": "fileId",
+              "value": "={{ $json.file.id }}",
+              "type": "string"
+            },
+            {
+              "id": "43a78920-0531-426d-9384-22a2b59a0615",
+              "name": "oldJsonContent",
+              "value": "={{ $json.fileContent }}",
+              "type": "object"
+            },
+            {
+              "id": "5df27f68-b2c7-4fa0-9796-bd63ba6bcf74",
+              "name": "memory",
+              "value": "={{ $json.output.memory }}",
+              "type": "array"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1476,
+        -65
+      ],
+      "id": "80fa90bf-3e01-474b-855c-502e037bf1ba",
+      "name": "SetArgsSaveGame"
     },
     {
       "parameters": {
@@ -275,26 +659,78 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        -440,
-        160
+        -1540,
+        -4.5
       ],
       "id": "4224c2da-d852-44f4-ab05-45049c89af17",
-      "name": "Filter"
+      "name": "FilterGetOrCreateGame"
     },
     {
       "parameters": {
-        "mode": "combine",
-        "combineBy": "combineByPosition",
+        "keep": "lastItems"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -660,
+        245.5
+      ],
+      "id": "a97349ff-9896-4c7b-8017-dd795aa6ae57",
+      "name": "GetFileContent"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        816,
+        -240
+      ],
+      "id": "166ddd68-ecc1-4d2f-8daf-af4e4ca94cc3",
+      "name": "GetFileId"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={{ $json }}",
         "options": {}
       },
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.1,
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1036,
+        -240
+      ],
+      "id": "7daa5b71-1537-47f5-87e0-0d5cf64b3af6",
+      "name": "SetFileId"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"fileContent\": {{ $json.toJsonString() }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1036,
+        -40
+      ],
+      "id": "9de7c489-6e42-433a-95aa-2a232cb2d74a",
+      "name": "SetFileContent"
+    },
+    {
+      "parameters": {
+        "jsCode": "function formatKeysOnly(obj, indent = 2, depth = 0) {\n  if (typeof obj !== 'object' || obj === null) return '';\n  const spacing = ' '.repeat(depth * indent);\n  const innerSpacing = ' '.repeat((depth + 1) * indent);\n  let result = '{\\n';\n\n  for (const key in obj) {\n    if (!obj.hasOwnProperty(key)) continue;\n\n    const value = obj[key];\n    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {\n      result += `${innerSpacing}${key}: ${formatKeysOnly(value, indent, depth + 1)},\\n`;\n    } else {\n      result += `${innerSpacing}${key},\\n`;\n    }\n  }\n\n  result += `${spacing}}`;\n  return result;\n}\n\n// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.memory = JSON.stringify($('GetFileContent').first().json, null, 2)\n\n  item.json.memoryIndexes = formatKeysOnly($('GetFileContent').first().json)\n\n  // console.log(\n  // I need you to format the object in $('GetFileContent').first().json in a \"json like\" string without the values at this format :\n  // {\n  //   firstKey: {\n  //     inside,\n  //     another\n  //   },\n  //   otherKey: {\n  //     otherInside,\n  //     anotherOther\n  //   },\n  //   aStringKey\n  // }\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
         -220,
-        310
+        440
       ],
-      "id": "fdef0e4d-0d1e-46f0-bd7d-685d78e316c4",
-      "name": "Merge1"
+      "id": "33629ef0-9307-4356-bd7c-8cd644aff00c",
+      "name": "FormatMemoryIndex"
     }
   ],
   "connections": {
@@ -303,6 +739,11 @@
         [
           {
             "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Information Extractor",
             "type": "ai_languageModel",
             "index": 0
           }
@@ -314,6 +755,11 @@
         [
           {
             "node": "If discord message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Information Extractor",
             "type": "main",
             "index": 0
           }
@@ -391,6 +837,125 @@
         ]
       ]
     },
+    "getOrCreate": {
+      "main": [
+        [
+          {
+            "node": "GetFileContent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "GetFileId",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "FormatMemoryIndex",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "n8n": {
+      "main": [
+        [
+          {
+            "node": "FilterGetOrCreateGame",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "SetArgs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SetArgs": {
+      "main": [
+        [
+          {
+            "node": "getOrCreate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "SaveGame2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save to memory": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "Get key in Memory indexes": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "Simple Memory": {
       "ai_memory": [
         [
@@ -402,40 +967,88 @@
         ]
       ]
     },
-    "getOrCreate": {
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        []
+      ]
+    },
+    "Information Extractor": {
       "main": [
         [
           {
-            "node": "Merge",
+            "node": "n8n1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "n8n1": {
+      "main": [
+        [
+          {
+            "node": "Filter1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Merge": {
+    "Filter1": {
       "main": [
         [
           {
-            "node": "AI Agent",
+            "node": "Merge2",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "n8n": {
+    "Merge2": {
       "main": [
         [
           {
-            "node": "Filter",
+            "node": "SetArgsSaveGame",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Filter": {
+    "SaveGame": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SetArgsSaveGame": {
+      "main": [
+        [
+          {
+            "node": "SaveGame",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FilterGetOrCreateGame": {
       "main": [
         [
           {
@@ -446,11 +1059,70 @@
         ]
       ]
     },
-    "Merge1": {
+    "GetFileContent": {
       "main": [
         [
           {
-            "node": "getOrCreate",
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SetFileContent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetFileId": {
+      "main": [
+        [
+          {
+            "node": "SetFileId",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SetFileId": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "SetFileContent": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Discord1": {
+      "main": [
+        []
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "FormatMemoryIndex": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
             "type": "main",
             "index": 0
           }
@@ -466,7 +1138,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "098ce5f0-852c-4eab-a86f-99704e4fdcbf",
+  "versionId": "1048bb2d-0f5e-4c7d-80c1-425a171b6469",
   "triggerCount": 2,
   "tags": [],
   "fileName": "gamemasterai.json",
