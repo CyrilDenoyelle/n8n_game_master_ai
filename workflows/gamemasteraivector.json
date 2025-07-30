@@ -1,0 +1,1287 @@
+{
+  "createdAt": "2025-07-28T17:11:01.774Z",
+  "updatedAt": "2025-07-30T14:17:36.000Z",
+  "id": "b5KMsvKXAeakKJ36",
+  "name": "GameMasterAiVector",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {
+          "maxRetries": 3
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1696,
+        368
+      ],
+      "id": "f9e7a930-9a7f-4162-b047-f3c6ef611301",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "WERJW5onaUjM7N9O",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "={{ $('Format message json').item.json.body.guild.id }}",
+          "mode": "id"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "={{ $('Format message json').item.json.body.channel.id }}",
+          "mode": "id"
+        },
+        "content": "={{ $('Zero').item.json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        2896,
+        -384
+      ],
+      "id": "2d92f83f-8b34-4277-bc2a-7c0db0a0bc64",
+      "name": "Discord1",
+      "webhookId": "2b9b625e-23be-4a6d-a6e8-71cfdb94c2e8",
+      "credentials": {
+        "discordBotApi": {
+          "id": "KPvBm5QqRsDAy08Q",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "play",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -208,
+        -480
+      ],
+      "id": "8edb287e-5abe-4251-90dd-03e7478adc50",
+      "name": "Webhook Play",
+      "webhookId": "dc2c5b17-2e9e-4a02-bba3-d0c77945ca6f",
+      "notesInFlow": true,
+      "notes": "/play"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"sessionId\": \"{{ $json.body.channel.id }}\",\n  \"action\": \"sendMessage\",\n  \"chatInput\": \"{{ $json.body.metadata.originalMessage.content }}\"\n}\n ",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        16,
+        -480
+      ],
+      "id": "759dbcc9-ad7d-4fc5-bf3f-60c2acd44d8b",
+      "name": "Format message json"
+    },
+    {
+      "parameters": {
+        "public": true,
+        "options": {
+          "responseMode": "responseNode"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        16,
+        -288
+      ],
+      "id": "ec263f54-6111-413a-a949-176e2b2cdc7f",
+      "name": "When chat message received",
+      "webhookId": "bcb39cae-9446-43ee-8a58-085599320d7f"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "31973dc9-1622-45bb-9cdd-9af1c2a0a98b",
+              "leftValue": "={{ $('Webhook Play') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2672,
+        -288
+      ],
+      "id": "1120a21d-f526-4a1c-853e-2cdc236fbb8e",
+      "name": "If discord message",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.2,
+      "position": [
+        2896,
+        -192
+      ],
+      "id": "b4fb3b0c-1534-4889-aba6-8987273a120e",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.state }}",
+                    "rightValue": "ZERO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "c2281103-d96a-419c-843d-43230d5eabfc"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "ZERO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "10870080-8fb2-414a-9524-c24495c42883",
+                    "leftValue": "={{ $json.state }}",
+                    "rightValue": "SHEETS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "SHEETS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ecead0f6-66f3-45f7-8e79-7c76958d2940",
+                    "leftValue": "={{ $json.state }}",
+                    "rightValue": "PLAYING",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PLAYING"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        688,
+        -288
+      ],
+      "id": "4dc07ba6-a19c-4cb2-b40e-cb16f3e838bf",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "text": "=# Role:\nTu es un assistant d'extraction d'informations pour un système de mémoire de jeu de rôle.\nÀ partir du texte fourni, extrais un maximum de donnée pour mettre à jour le JSON de mémoire du jeu.\nRetourne toutes les informations mentionnées ou clairement impliquées dans le texte. N'invente rien et ne devine pas ce qui n'est pas dit.\n\nLes lieux doivent être représentés comme des objets avec au minimum un description détaillé.\nLes ellements historiques aussi doivent apparaitre.\n\nLes personnages doivent être des objets contenant un maximum d'informations et de statistiques style DnD si pertinent.\n\n## Important :\nN'inclus aucun champ dont la valeur est absente ou non déductible du texte.\nUtilise la notation par points (.) pour les chemins des clés (par exemple : characters.Eloria.race).\nN'utilise pas de barres obliques (/) dans les chemins.\nUniquement du json valide, aucune explication en dehors du json, pas de balise ou de \"```\"\n\n# Text:\n{{ $json.output }}",
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"memory\":{\n      \"type\": \"array\",\n      \"description\": \"informations to store\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"path\": {\n            \"type\": \"string\",\n            \"description\": \"Path to the data/memory\"\n          },\n          \"new_value\": {\n            \"type\": \"string\",\n            \"description\": \"data/memory to store\"\n          } \n        }\n      }\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1,
+      "position": [
+        16,
+        80
+      ],
+      "id": "6a7abc1f-38f3-4088-84b7-4c963098011c",
+      "name": "Information Extractor",
+      "retryOnFail": true,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "games",
+          "mode": "list",
+          "cachedResultName": "games"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "game_id",
+              "value": "={{ $json.sessionId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        448,
+        -736
+      ],
+      "id": "660573a6-0d19-4cae-b3e0-82a644cc62ab",
+      "name": "Select rows from a table",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "jVcCuNAEz1xsfSBq",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d8c6bf5e-ed0a-400d-b6fe-75ef930e0d37",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        -736
+      ],
+      "id": "0eb097d0-31ba-454b-8046-4b41f77f8ea7",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "games",
+          "mode": "list",
+          "cachedResultName": "games"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "game_id": "={{ $('conditional aggregate').item.json.sessionId }}",
+            "state": "ZERO"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "game_id",
+              "displayName": "game_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "state",
+              "displayName": "state",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        896,
+        -736
+      ],
+      "id": "83aad070-e645-41c6-96cb-ca47dd57ee47",
+      "name": "Insert rows in a table",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "jVcCuNAEz1xsfSBq",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"sessionId\": \"{{ $json.sessionId }}\",\n  \"action\": \"{{ $json.action }}\",\n  \"chatInput\": {{ $json.chatInput.toJsonString() }}\n}\n ",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        -384
+      ],
+      "id": "3b7b8cc2-d5ed-40fb-9e50-da64ff5c6c86",
+      "name": "conditional aggregate"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "games",
+          "mode": "list",
+          "cachedResultName": "games"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "game_id",
+              "value": "={{ $json.sessionId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        464,
+        -272
+      ],
+      "id": "ce2b73fd-1451-436a-a4ff-a7c777213cf9",
+      "name": "Select rows from a table1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "jVcCuNAEz1xsfSBq",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "CREATE TABLE games (\n    game_id CHAR(32) PRIMARY KEY,\n    state VARCHAR(20)\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        16,
+        -1104
+      ],
+      "id": "b158ed2c-5a67-441c-87bd-50eef983f47c",
+      "name": "Create Table Games",
+      "credentials": {
+        "postgres": {
+          "id": "jVcCuNAEz1xsfSBq",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "CREATE TABLE settings (\n    game_id CHAR(32) PRIMARY KEY,\n    mood TEXT,                  -- general mood (dark, absurd, realistic, epic, etc.)\n    world_type TEXT,            -- universe type (setting, era, tone, genre)\n    ruleset TEXT,               -- rule system (DnD 5e, narrative, homebrew, etc.)\n    story_type TEXT,            -- story type (quest, exploration, investigation, sandbox, etc.)\n    content_preferences TEXT,   -- things players want to avoid or include\n    player_preferences TEXT,    -- narrative, pace, violence, humor, romance, etc.\n    additional_notes TEXT,      -- any other limits or specific wishes\n    FOREIGN KEY (game_id) REFERENCES games(game_id)\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        16,
+        -944
+      ],
+      "id": "9a7f84de-68c6-44f8-a555-e9cf6666c8dd",
+      "name": "Create Table",
+      "credentials": {
+        "postgres": {
+          "id": "jVcCuNAEz1xsfSBq",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('conditional aggregate').item.json.sessionId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        1824,
+        368
+      ],
+      "id": "3db5a371-3a3f-4e44-8894-0c55852a73a8",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "jVcCuNAEz1xsfSBq",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        320,
+        320
+      ],
+      "id": "37a83bde-532d-4911-b7fc-273d0c03933c",
+      "name": "Postgres PGVector Store",
+      "credentials": {
+        "postgres": {
+          "id": "jVcCuNAEz1xsfSBq",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"sessionId\": \"{{ $('conditional aggregate').item.json.sessionId }}\",\n  \"action\": \"{{ $('conditional aggregate').item.json.action }}\",\n  \"chatInput\": {{ $('conditional aggregate').item.json.chatInput.toJsonString() }}\n}\n ",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        960,
+        -432
+      ],
+      "id": "db609ed6-eb09-4a66-87a0-db026ea861e5",
+      "name": "conditional aggregate1"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "settings",
+          "mode": "list",
+          "cachedResultName": "settings"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "mood": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('mood', ``, 'string') }}",
+            "world_type": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('world_type', ``, 'string') }}",
+            "ruleset": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ruleset', ``, 'string') }}",
+            "story_type": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('story_type', ``, 'string') }}",
+            "content_preferences": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('content_preferences', ``, 'string') }}",
+            "player_preferences": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('player_preferences', ``, 'string') }}",
+            "additional_notes": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('additional_notes', ``, 'string') }}",
+            "game_id": "={{ $('conditional aggregate').item.json.sessionId }}"
+          },
+          "matchingColumns": [
+            "game_id"
+          ],
+          "schema": [
+            {
+              "id": "game_id",
+              "displayName": "game_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "mood",
+              "displayName": "mood",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "world_type",
+              "displayName": "world_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "ruleset",
+              "displayName": "ruleset",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "story_type",
+              "displayName": "story_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "content_preferences",
+              "displayName": "content_preferences",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "player_preferences",
+              "displayName": "player_preferences",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "additional_notes",
+              "displayName": "additional_notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        1360,
+        -272
+      ],
+      "id": "c61800bd-c0a5-463a-889b-d24314efa65c",
+      "name": "\"Insert or update Settings\" Tool",
+      "credentials": {
+        "postgres": {
+          "id": "jVcCuNAEz1xsfSBq",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM settings WHERE game_id = '780fe40cb83e4f02aef932ceae52cbb0';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        16,
+        -768
+      ],
+      "id": "2d53d618-0341-4c11-b89d-d552d0313f24",
+      "name": "Get by id",
+      "credentials": {
+        "postgres": {
+          "id": "jVcCuNAEz1xsfSBq",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('conditional aggregate').item.json.chatInput }}",
+        "options": {
+          "systemMessage": "=\n### Tu es l’**agent Sheet** :\nTu est chargé de construire toute la structure mécanique de la partie de jeu de rôle textuel.\n\n### Objectif principal :\nTu travailles à partir des données que tu reçoi de l'agent Zero. Qu'il a mise en forme avec les joueurs.\nRassembler toutes les informations nécessaires à la création des feuilles de personnages et autres de l'univers en discutant avec les joueurs.\n\n### Ce que tu dois construire avec les joueurs :\n- Les fiches de personnages joueurs (nom, race/classe, compétences, background, quêtes perso, etc.)\n- Éventuellement certaines informations privées en messages directs\n- Des fiches PNJ, monstres ou créatures importantes\n- Les lieux et environnements de départ\n- Le GameState initial (état réel du monde)\n- Le SensState initial (perception sensorielle des personnages)\n\n### Définitions à respecter :\n\n**GameState** = état réel de l’environnement autour des personnages joueurs. Il inclut :  \n- Les entités et objets présents, leurs directions et distances.  \n- Les sons et odeurs qu’ils produisent.\n\n**SensState** = état sensoriel perçu par les personnages joueurs, en fonction de leurs capacités ou résultats de jets :  \n- Ce qu’ils voient, sentent, entendent.  \n- À quelle distance, dans quelle direction.  \n- Autres sens spéciaux si l’univers le permet.\n\n### Comportement attendu :\n- Pose une question à la fois.\n- Relance ou reformule si une réponse est vague ou confuse.\n- Résume régulièrement les choix confirmés.\n- Propose des exemples en cas d’hésitation.\n- Ne commence jamais la partie ou la narration.\n\nQuand tous les éléments sont prêts, et seulement à ce moment, déclenche le début de la partie avec un message contenant **last_answer**.\n\n### Utilisation du tool **\"Insert or update Sheet\" Tool** :\nTu dois **systématiquement** utiliser le tool **\"Insert or update Sheet\" Tool** dès qu’une information est confirmée ou modifiée:\n\n- Si une information est nouvelle → insère-la.\n- Si une information change ou est complétée → mets-la à jour.\n- Si une information n'est pas clair propose de noter quelque chose et fais valider par l'utilisateur.\n\nN’oublie **jamais** ces étapse elles sont **capitales**.\n\n### Transmission :\nTu ne dois transmettre aucune donnée à l’agent suivant tant que toutes les informations ne sont pas validées, confirmées et claires.\nLorsque tout est prêt, conclue avec un message final contenant aussi \"**final_answer**\" pour transmettre les informations a l'agent suivant.\n\n### Souviens-toi :\nTu agis comme un assistant humain méticuleux. Ton rôle est de créer un cadre de jeu fidèle aux désirs des joueurs, et de t'assurer que leurs préférences soient enregistrées et respectées.",
+          "returnIntermediateSteps": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        2032,
+        -176
+      ],
+      "id": "92cb5449-c965-4bae-b67b-68357dd26fef",
+      "name": "Sheet",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePGVector",
+      "typeVersion": 1.3,
+      "position": [
+        656,
+        528
+      ],
+      "id": "aa0dacb5-4fd7-4ad0-92d4-4c2764e1ed3e",
+      "name": "Postgres PGVector Store1",
+      "credentials": {
+        "postgres": {
+          "id": "jVcCuNAEz1xsfSBq",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "games",
+          "mode": "list",
+          "cachedResultName": "games"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "game_id": "={{ $('conditional aggregate').item.json.sessionId }}",
+            "state": "SHEET"
+          },
+          "matchingColumns": [
+            "game_id"
+          ],
+          "schema": [
+            {
+              "id": "game_id",
+              "displayName": "game_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "state",
+              "displayName": "state",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1824,
+        -592
+      ],
+      "id": "e958b553-7271-4c09-b0e0-9046b7a989b8",
+      "name": "Update rows in a table",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "jVcCuNAEz1xsfSBq",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "17158d88-87e1-4637-9883-019b4cfe1939",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "to_sheet_agent",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1552,
+        -496
+      ],
+      "id": "62efc5bd-8396-4ea1-9850-5251f4cba26d",
+      "name": "If to_sheet_agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=### Tu es l’agent Zero :\nchargé de discuter avec les joueurs pour construire le cadre narratif, l’ambiance et les préférences de jeu d’une partie de jeu de rôle textuel.\n\n### Objectif principal :\nRassembler toutes les informations nécessaires à la création d’un univers de jeu immersif et respectueux des attentes des joueurs.\n\n### Ce que tu dois définir avec eux :\n- L’ambiance générale souhaitée (dbkey: mood)\n- Le type d’univers: cadre, époque, ton, genre (dbkey: world_type)\n- Le système de règles souhaité (dbkey: ruleset)\n- Le type d’histoire: quête, exploration, enquête, sandbox, etc... (dbkey: story_type)\n- Les contenus que les joueurs veulent éviter ou au contraire souhaitent retrouver (dbkey: content_preferences)\n- Leurs préférences (narration, rythme, violence, humour, romance…) (dbkey: player_preferences)\n- Toute autre limite ou envie particulière (dbkey: additional_notes)\n\n### Comportement attendu :\n- Pose une seule question à la fois.\n- Relance ou reformule si une réponse est vague ou confuse.\n- Résume régulièrement les choix confirmés.\n- Propose des exemples en cas d’hésitation.\n- Ne commence jamais la partie ou la narration.\n\n### Utilisation du tool **\"Insert or update Settings\" Tool** :\nTu dois **systématiquement** utiliser le tool **\"Insert or update Settings\" Tool** dès qu’une information est confirmée ou modifiée:\n\n- Si une information est nouvelle → insère-la.\n- Si une information change ou est complétée → mets-la à jour.\n- Si une information n'est pas clair propose de noter quelque chose et fais valider par l'utilisateur.\n- Met ces information a jour **au fur et a mesure**.\n\nN’oublie **jamais** ces étapse elles sont **capitales**.\n\nmood TEXT,                  -- general mood (dark, absurd, realistic, epic, etc.)\nworld_type TEXT,            -- universe type (setting, era, tone, genre)\nruleset TEXT,               -- rule system (DnD 5e, narrative, homebrew, etc.)\nstory_type TEXT,            -- story type (quest, exploration, investigation, sandbox, etc.)\ncontent_preferences TEXT,   -- things players want to avoid or include\nplayer_preferences TEXT,    -- narrative, pace, violence, humor, romance, etc.\nadditional_notes TEXT,      -- any other limits or specific wishes\n\nN’oublie **jamais** cette étape c'est **capital**.\n\n### Transmission :\nTu ne dois transmettre aucune donnée à l’agent suivant tant que toutes les informations ne sont pas validées, confirmées et claires.\nLorsque tout est prêt, conclue avec un message final contenant aussi \"**to_sheet_agent**\" pour transmettre les informations a l'agent suivant.\n\n### Souviens-toi :\nTu agis comme un assistant humain méticuleux. Ton rôle est de créer un cadre de jeu fidèle aux désirs des joueurs, et de t'assurer que leurs préférences soient enregistrées et respectées.",
+          "returnIntermediateSteps": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1168,
+        -480
+      ],
+      "id": "a3982eeb-b480-460f-851e-7665fd6352b8",
+      "name": "Zero",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"sessionId\": \"{{ $('conditional aggregate').item.json.sessionId }}\",\n  \"action\": \"{{ $('conditional aggregate').item.json.action }}\",\n  \"chatInput\": {{ (\"L'agent Zero transmet a l'agent Sheet le message suivant : \\\"\"  + $json.output.replace('**to_sheet_agent**', '') + \"\\\"\").toJsonString() }}\n}",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1792,
+        -304
+      ],
+      "id": "2b990e4d-3257-41d9-b8d7-ed12d6d0b641",
+      "name": "conditional aggregate2"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "settings",
+          "mode": "list",
+          "cachedResultName": "settings"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "mood": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('mood', ``, 'string') }}",
+            "world_type": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('world_type', ``, 'string') }}",
+            "ruleset": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ruleset', ``, 'string') }}",
+            "story_type": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('story_type', ``, 'string') }}",
+            "content_preferences": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('content_preferences', ``, 'string') }}",
+            "player_preferences": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('player_preferences', ``, 'string') }}",
+            "additional_notes": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('additional_notes', ``, 'string') }}",
+            "game_id": "={{ $('conditional aggregate').item.json.sessionId }}"
+          },
+          "matchingColumns": [
+            "game_id"
+          ],
+          "schema": [
+            {
+              "id": "game_id",
+              "displayName": "game_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "mood",
+              "displayName": "mood",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "world_type",
+              "displayName": "world_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "ruleset",
+              "displayName": "ruleset",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "story_type",
+              "displayName": "story_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "content_preferences",
+              "displayName": "content_preferences",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "player_preferences",
+              "displayName": "player_preferences",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "additional_notes",
+              "displayName": "additional_notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        2320,
+        80
+      ],
+      "id": "47736244-745a-430c-98d5-ce5ff77f3914",
+      "name": "\"Insert or update SheetLine\" Tool",
+      "credentials": {
+        "postgres": {
+          "id": "jVcCuNAEz1xsfSBq",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Sheet",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Zero",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Play": {
+      "main": [
+        [
+          {
+            "node": "Format message json",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format message json": {
+      "main": [
+        [
+          {
+            "node": "conditional aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "conditional aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If discord message": {
+      "main": [
+        [
+          {
+            "node": "Discord1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "conditional aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Select rows from a table": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "conditional aggregate": {
+      "main": [
+        [
+          {
+            "node": "Select rows from a table",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Select rows from a table1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select rows from a table1": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Sheet",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Zero",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres PGVector Store": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "conditional aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Zero",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\"Insert or update Settings\" Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Zero",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sheet": {
+      "main": [
+        [
+          {
+            "node": "If discord message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres PGVector Store1": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "If to_sheet_agent": {
+      "main": [
+        [
+          {
+            "node": "Update rows in a table",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "conditional aggregate2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If discord message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Zero": {
+      "main": [
+        [
+          {
+            "node": "If to_sheet_agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "conditional aggregate2": {
+      "main": [
+        [
+          {
+            "node": "Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\"Insert or update SheetLine\" Tool": {
+      "ai_tool": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "697031f3-4bc6-418c-88b4-af4a4f6de615",
+  "triggerCount": 2,
+  "tags": [],
+  "fileName": "gamemasteraivector.json",
+  "option": "gamemasteraivector.json"
+}
